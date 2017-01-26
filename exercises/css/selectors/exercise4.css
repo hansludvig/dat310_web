@@ -1,0 +1,12 @@
+li~ul{
+    color: blue;
+}
+ul ul ul{
+    list-style-type: none;
+}
+ul li:first-child{
+    font-weight: bold;
+}
+a{
+    color: red;
+}

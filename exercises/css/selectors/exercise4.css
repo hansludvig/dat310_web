@@ -1,4 +1,4 @@
-li~ul{
+li ul{
     color: blue;
 }
 ul ul ul{
@@ -9,4 +9,11 @@ ul li:first-child{
 }
 a{
     color: red;
+}
+p a{
+    color: green;
+}
+body div:nth-child(2) p a{
+    background-color: yellow;
+    color: purple;
 }

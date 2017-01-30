@@ -1,0 +1,78 @@
+*{
+    font-family: Verdana, sans-serif;
+}
+a{
+        color: #0033cc;
+        text-decoration: none;
+        font-size: 10px;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+#header{
+    background-color: royalblue;
+    border: 1px outset darkblue;
+}
+h1{
+    color: white;
+    text-shadow: #333;
+    border-bottom: 0px;
+}
+h2{
+    color: white;
+    text-shadow: #333;
+    font-size: 1.2em;
+    font-family: Garamond, serif;
+    font-style: italic;
+    border-top: 0px;
+}
+div h2:nth-child(1){
+    color: black;
+    border-bottom: 1px solid #999999;
+}
+.rank{
+    color: white;
+    background-color: black;
+}
+#content h2{
+    color: black;
+}
+p{
+    text-align: justify;
+    margin: 2em;
+    color: #999999;
+    font-size: 10px;
+}
+.place p:first-line{
+    color: black;
+}
+#footer{
+    background-color: black;
+}
+#calendar h2{
+    color: white;
+}
+#calendar a{
+    color: white;
+}
+ul li{
+    color: white;
+}
+ul{
+    list-style-type: circle;
+}
+ul li:first-child{
+    list-style-type: disc;
+}
+ul li:nth-child(2){
+    list-style-type: disc;
+    font-weight: bold;
+}
+#footer p{
+    text-align: center;
+    color: yellow;
+    font-style: oblique;
+}
+#content h2{
+    border-bottom: 1px solid black;
+}

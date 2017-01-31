@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Exercise #4. Subscription form</title>
+        <link rel="stylesheet" type="text/css" href="exercise4.css">
+    </head>
+    <body> 
+        <form action="http://www3.ux.uis.no/~balog/dat310/formtest.php">
+            <fieldset>
+                <legend>Personal details</legend>
+                <label for="fname">First name: </label>
+                <input type="text" name="fname" id="fname">
+                <br>
+                <label for="lname">Last name: </label>
+                <input type="text" name="lname" id="lname">
+                <br>
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email">
+                <br>
+                <label>Gender:</label>
+                <input type="radio" name="gender" value="male" id="male"> Male
+                <input type="radio" name="gender" value="female" id="famale"> Female
+                <br>
+            </fieldset>
+            <fieldset>
+                <legend>Magazines</legend>
+                <input class="check" type="checkbox" name="sa" value="sa" id="sa"> Stavanger Aftenblad <br>
+                <input class="check" type="checkbox" name="tu" value="tu"> Teknisk Ukeblad <br>
+                <input class="check" type="checkbox" name="sh" value="sh" id="sh"> Se og Hør <br>
+                <input class="check" type="checkbox" name="fam" value="fam" id="fam"> Familien <br>
+            </fieldset>
+            <fieldset>
+                <legend>Subscription</legend>
+                <label for="months">Peroiod:</label>
+                <select name="months" id="months">
+                    <option value="6">6 months</option>
+                    <option value="12">12 months</option>
+                    <option value="18">18 months</option>
+                    <option value="24">24 months</option>
+                </select> <br>
+            </fieldset>       
+            <div class="sumit">
+                <input type="submit" name="sub" value="Subscribe">
+             </div>
+                <input type="hidden" name="secret" value="email_334">
+         </form> 
+    </body>
+</html>

@@ -1,0 +1,25 @@
+fieldset{
+    width: 21em;
+    background-color: beige;
+    margin: 0 auto;
+}
+label{
+    float: left;
+    text-align: right;
+    width: 7em;
+    margin-right: 1em;
+    /*border: 1px solid red;*/
+}
+/*.sex{
+    width: 60px;
+
+}
+.check{
+    float: left;
+}
+.blad{
+    text-align: left;
+}*/
+.sumit{
+    text-align: center;
+}

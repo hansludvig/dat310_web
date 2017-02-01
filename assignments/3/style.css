@@ -1,3 +1,7 @@
+html{
+    position: relative;
+    min-height: 100%;
+}
 li{
     display: inline;
     border: 1px solid black;
@@ -11,14 +15,24 @@ article{
     display: inline-block;
 }
 p{
-    border: 1px solid red;
-    margin: 0 10em 0 0;
+    margin: 0 5em 0 0;
     padding: 0 0 0 10px;
 }
 body{
     background-color: white;
+    margin: 0 0 70px;
 }
 footer{
-    position: fixed;
-    bottom: 1;
+    position: absolute;
+    background-color: lightslategray;
+    left: 0;
+    bottom: 0; 
+    height: 70px;
+    width: 100%;
+    padding: 1em 0 0 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+header{
+    padding-left: 10px;
 }

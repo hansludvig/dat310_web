@@ -1,0 +1,24 @@
+li{
+    display: inline;
+    border: 1px solid black;
+}
+nav{
+    width: 100%;
+    background-color: grey;
+    padding: 0.1em;
+}
+article{
+    display: inline-block;
+}
+p{
+    border: 1px solid red;
+    margin: 0 10em 0 0;
+    padding: 0 0 0 10px;
+}
+body{
+    background-color: white;
+}
+footer{
+    position: fixed;
+    bottom: 1;
+}

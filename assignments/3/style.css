@@ -2,25 +2,92 @@ html{
     position: relative;
     min-height: 100%;
 }
-li{
-    display: inline;
-    border: 1px solid black;
+h1, h2, h3, h4, h5, h6{
+    font-family: Montserrat;
 }
-nav{
-    width: 100%;
-    background-color: grey;
-    padding: 0.1em;
-}
-article{
-    display: inline-block;
-}
-p{
-    margin: 0 5em 0 0;
-    padding: 0 0 0 10px;
+li, p, article{
+    font-family: Raleway;
+    font-size: 1em;
 }
 body{
     background-color: white;
     margin: 0 0 70px;
+}
+header{
+    padding-left: 10px;
+}
+nav{
+    width: 100%;
+    background-color: lightgrey;
+    padding: 0.1em;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+    li{
+        display: inline;
+        padding: 0 1em 0 0;
+    }
+.sale{
+    background-color: orange;
+    margin: 1em;
+    text-align: center;
+    width: 806px;
+    height: 240px;
+    color: white;
+}
+.saleh1{
+    padding: .3em;
+    font-size: 3em;
+}
+hr{
+    border: 1px solid white;
+    width: 70%;
+}
+.product{
+    width: 260px;
+    height: 370px;
+    border: 1px solid black;
+    margin: 0 5px 5px 5px;
+    position: relative;
+}
+.poff{
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    position: absolute;
+    top: 0; 
+    right: 0;
+    padding: .5em;
+    z-index: 1;
+}
+.dealcolor{
+    color: darkorange;
+}
+.oldprize{
+    color: grey;
+}
+.pimg{  
+    position: absolute;
+    left: 0;
+    top: 5%;
+    width: 100%;
+    text-align: center;
+}
+img{
+    height: 250px;
+    width: 250px;
+}
+.ph4{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: .1em;
+}
+.pprize{
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 footer{
     position: absolute;
@@ -32,7 +99,36 @@ footer{
     padding: 1em 0 0 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
-header{
-    padding-left: 10px;
+    article{
+        display: inline-block;
+    }
+    p{
+        margin: 0 5em 0 0;
+        padding: 0 0 0 10px;
+    }
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat-Regular'), url(http://fonts.gstatic.com/s/montserrat/v9/zhcz-_WihjSQC0oHJ9TCYAzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'), url(http://fonts.gstatic.com/s/raleway/v11/YZaO6llzOP57DpTBv2GnyFKPGs1ZzpMvnHX-7fPOuAc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'), url(http://fonts.gstatic.com/s/raleway/v11/QAUlVt1jXOgQavlW5wEfxQLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }

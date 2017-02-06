@@ -33,6 +33,12 @@ main{
     width: 824px;
     margin: 1em;
 }
+a{
+    text-decoration: none;
+}
+a:visited{
+    color: inherit;
+}
 .sale{
     background-color: orange;
     text-align: center;

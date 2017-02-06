@@ -30,7 +30,7 @@ nav{
         padding: 0 1em 0 0;
     }
 main{
-    width: 806px;
+    width: 824px;
     margin: 1em;
 }
 .sale{
@@ -39,6 +39,7 @@ main{
     width: 806px;
     height: 240px;
     color: white;
+    margin: 10px 0 10px 5px;
 }
 .saleh1{
     padding: .3em;
@@ -53,6 +54,12 @@ hr{
     height: 370px;
     border: 1px solid black;
     position: relative;
+    margin: 0 10px 10px 0;
+}
+.product:hover{
+    background-color: grey;
+    border: 2px hidden grey;
+    box-shadow: 5px 5px 5px #888888;
 }
 .poff{
     border-bottom: 1px solid black;
@@ -60,8 +67,13 @@ hr{
     position: absolute;
     top: 0; 
     right: 0;
-    padding: .5em;
     z-index: 1;
+    width: 60px;
+    height: 40px;
+}
+.pind{
+    text-align: center;
+    line-height: 40px;
 }
 .dealcolor{
     color: darkorange;

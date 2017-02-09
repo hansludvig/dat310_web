@@ -70,16 +70,20 @@ hr{
     width: 350px;
     height: 350px;
     border: 1px solid black;
-    position: relative;
+    position: absolute;
     margin: 0 10px 10px 0;
 }
 .description{
-    position: relative;
+    position: absolute;
+    right: 30%;
+    top: 16%;
     margin: 0 10px 10px 0;
-    top: 0;
     width: 28em;
     height: 350px;
     
+}
+#articleblock{
+    display: inline-block;
 }
 .product:hover{
     background-color: grey;

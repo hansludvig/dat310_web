@@ -5,7 +5,7 @@ html{
 h1, h2, h3, h4, h5, h6{
     font-family: Montserrat;
 }
-li, p, article{
+li, td, p, article{
     font-family: Raleway;
     font-size: 1em;
 }
@@ -171,6 +171,9 @@ footer{
         padding: 0 0 0 1em;
 
     }
+.producktable{
+    border: 1px solid black;
+}
 
 @font-face {
   font-family: 'Montserrat';

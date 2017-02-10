@@ -134,6 +134,36 @@ img{
     height: 350px;
     width: 350px;
 }
+.table-img{
+    width: 50px;
+    height: 50px;
+}
+.table-align{
+    text-align: right;
+    padding-left: 2em;
+}
+.table-icon{
+    padding-left: 1em;
+    color: #1aa3ff
+}
+.table-div{
+    float: left;
+    margin-top: 2em;
+}
+.table-div2{
+    float: left;
+    margin-top: 2em;
+}
+.checkout{
+    height: 20px;
+    background-color: #1aa3ff;
+    width: 8em;
+    padding: .2em;
+    border-radius: 2px;
+}
+.checkout-button{
+    height: 20px;
+}
 .ph4{
     position: absolute;
     bottom: 0;

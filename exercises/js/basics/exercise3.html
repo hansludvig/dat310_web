@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exercise #3</title>
+    </head>
+    <body>
+        <script>
+            function gcd(a,b){
+                
+                var t = null;
+                while (b !== 0){
+                    t = b;
+                    b = a % b;
+                    a = t;
+                }
+                return a;
+            }
+            var res1 = 48;
+            var res2 = 18;
+            console.log(gcd(res1, res2));
+        </script>
+    </body>
+</html>

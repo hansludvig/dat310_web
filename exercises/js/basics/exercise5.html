@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exercise #5</title>
+    </head>
+    <body>
+        <script>
+        var inp = prompt("Enter text: ");
+        reverse(inp);
+            function reverse(str){
+                var arr = str.split("");
+                var res = [];
+                for (var i = 0; i < arr.length; i++){
+                    res.unshift(str[i]);
+                }
+                document.write(res.join(""));
+            }
+        </script>
+    </body>
+</html>

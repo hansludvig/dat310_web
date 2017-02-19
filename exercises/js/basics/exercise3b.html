@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exercise #3</title>
+    </head>
+    <body>
+        <script>
+            function gcd(a,b){
+                
+                var t = null;
+                while (b !== 0){
+                    t = b;
+                    b = a % b;
+                    a = t;
+                }
+                return a;
+            }
+            
+            var a = prompt("Please enter number your first number: ");
+            var b = prompt("Please enter number your second number: ");
+
+            document.write("The greatest common divisor of " + a + " and " + b + " is " + gcd(a, b));
+            
+        </script>
+    </body>
+</html>

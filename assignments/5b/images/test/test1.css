@@ -1,0 +1,17 @@
+#card{
+    margin: 5px;
+}
+
+.front{
+    padding: 1px;
+    height: 100px;
+    width: 100px;
+    background-color: black;
+}
+
+.back{
+    padding: 1px;
+    height: 100px;
+    width: 100px;
+    background-color: yellow;
+}

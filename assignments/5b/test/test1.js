@@ -23,7 +23,7 @@
             for (var col = 0; col < sizeCols; col++) {
                 card = $("<div></div>").addClass("card");
                 back = $("<div></div>").addClass("front");
-                back2 = $("<img src=\"../fruit_" + j + ".jpg\" alt=" + j + "\" />");
+                back2 = $("<img src=\"../images/fruit_" + j + ".jpg\" alt=" + j + "\" />");
                 back.prepend(back2);
                 front = $("<div></div>").addClass("back");
                 card.prepend(front).prepend(back);

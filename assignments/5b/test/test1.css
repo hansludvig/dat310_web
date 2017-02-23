@@ -43,6 +43,7 @@ body {
     float: topt;
 }
 
+/*
 .r-back{
     backface-visibility: hidden;
     transform-style: preserve-3d;
@@ -70,3 +71,4 @@ body {
     position: relative;
     transform-style: preserve-3d;
 }
+*/

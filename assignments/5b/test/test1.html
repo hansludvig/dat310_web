@@ -10,7 +10,27 @@
     <nav>
         <button id="start" type="submit" name="start">Start</button>
     </nav>
-    <body id="cardboard">
+    
+    <body>
        
+       <table class="tableClass">
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-default" onclick="newBoard()" id="btnNew">New Game</button>
+                </td>
+            </tr>
+            <tr>
+                <td><div class="stats">Total number of flips</div></td>
+                <td><div class="stats" id="flips"></div></td>
+            </tr>
+            <tr>
+                <td><div class="stats">Time Elapsed</div></td>
+                <td><div class="stats" id="runner"></div></td>
+            </tr>
+        </table>
+       
+       <div id="cardboard">
+           
+       </div>
     </body>
 </html>

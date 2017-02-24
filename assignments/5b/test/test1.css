@@ -27,6 +27,10 @@ body {
     float: top;
 }
 
+table{
+    border: 1px solid black;
+}
+
 /*
 .r-back{
     backface-visibility: hidden;

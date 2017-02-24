@@ -27,14 +27,20 @@
                 }else{
                     j++;
                 }
-                
+                if (col == 0) {
+                    card.addClass("clearleft");
+                }
+                $(card).flip();
                 $("body").append(card);
             }
         }
-      
+        var cardWidth = card.outerWidth(true);
+        $("#cardboard").width(sizeCols * cardWidth);
 
     });
- 
+    
+    
+    
    $("#cardboard").on("click", ".card", function(){
         $(this).flip();
     });

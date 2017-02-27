@@ -30,7 +30,7 @@
         
         for (var row = 0; row < sizeRows; row++) {
             for (var col = 0; col < sizeCols; col++) {
-                card = $("<div id=" + i + "></div>").addClass("card");
+                card = $("<div id=" + i + "></div>").addClass("card").addClass("notClicked");
                 back = $("<div></div>").addClass("back");
                 back2 = $("<img src=\"../images/fruit_" + j + ".jpg\" alt=" + j + " />");
                 back.prepend(back2);
@@ -46,7 +46,7 @@
                 if (col == 0) {
                     card.addClass("clearleft");
                 }
-                $(card).flip();
+                $(card).flip({trigger: 'manual'});
                 $("#cardboard").append(card);
             }
         }
@@ -54,24 +54,31 @@
         $("#cardboard").width(sizeCols * cardWidth);
 
     });
-      
-   $("#cardboard").on("click", ".card", function(){
+    
+    
+
+   $("#cardboard").on("click", ".notClicked", ".card", function(){
         var tile = this;
+        console.log(this);
         tiles_flipped_total++;
         console.log(tiles_flipped_total);
         console.log($(tile).attr("id"));
         console.log($(tile).data("flip-model").isFlipped);
 
-        if ((memory_values.length < 2) && ($(tile).data("flip-model").isFlipped == true)){
+        if ((memory_values.length < 2)){
 
             if (memory_values.length == 0){
+                $(tile).flip(true);
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
-                memory_tile_ids.push($(tile).attr("id"));
-                $(tile).off(".flip");
+                memory_tile_ids.push(tile);
+                $(tile).removeClass("notClicked");
+                //$(tile).off(".flip");
             } else if (memory_values.length == 1){
+                $(tile).flip(true);
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
-                memory_tile_ids.push($(tile).attr("id"));
-                $(tile).off(".flip");
+                memory_tile_ids.push(tile);
+                $(tile).removeClass("notClicked");
+                //$(tile).off(".flip");
 
                 if ((memory_values[0] === memory_values[1]) && (memory_tile_ids[0] !== memory_tile_ids[1])){
                     $(tile).off(".flip");
@@ -86,10 +93,9 @@
                     function flipBack(){
                         var back1 = memory_tile_ids[0];
                         var back2 = memory_tile_ids[1];
-                        $("#" + back1 + "").flip();
-                        $("#" + back2 + "").flip();
-                        $("#" + back1 + "").flip(false);
-                        $("#" + back2 + "").flip(false);
+                        $(back1).flip(false);
+                        $(back2).flip(false);
+                        
                         memory_values = [];
                         memory_tile_ids = [];
                     }

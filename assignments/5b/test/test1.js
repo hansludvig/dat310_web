@@ -30,7 +30,7 @@
         
         for (var row = 0; row < sizeRows; row++) {
             for (var col = 0; col < sizeCols; col++) {
-                card = $("<div id=" + i + "></div>").addClass("card");
+                card = $("<div id=" + i + "></div>").addClass("card").addClass("notMatch");
                 back = $("<div></div>").addClass("back");
                 back2 = $("<img src=\"../images/fruit_" + j + ".jpg\" alt=" + j + " />");
                 back.prepend(back2);
@@ -57,7 +57,7 @@
     
     
 
-   $("#cardboard").on("click", ".card", function(){
+   $("#cardboard").on("click", ".notMatch", ".card", function(){
         var tile = this;
         console.log(this);
         tiles_flipped_total++;
@@ -81,6 +81,9 @@
                 if ((memory_values[0] === memory_values[1]) && (memory_tile_ids[0] !== memory_tile_ids[1])){
                     $(tile).off(".flip"); // Remove flip from matching tiles
                     $(last_flip).off(".flip");
+                    $(tile).removeClass("notMatch"); // Remove flip from matching tiles
+                    $(last_flip).removeClass("notMatch");
+                    
 
                     tiles_filpped += 2;
                     memory_values = [];

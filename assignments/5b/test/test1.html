@@ -12,25 +12,35 @@
     </nav>
     
     <body>
-       
-       <table class="tableClass">
+       <div class="tableboard">
+       <table class="tableC" border="1">
             <tr>
                 <td colspan="2">
-                    <button class="btn btn-default" onclick="newBoard()" id="btnNew">New Game</button>
+                    <button class="newGame">New Game</button>
                 </td>
+            </tr>
+            <tr>
+                <td><div class="stats">Time Elapsed</div></td>
+                <td><div class="stats" id="runner"></div></td>
+            </tr>
+            <tr>
+                <td class="stats p_one">Player 1</td>
+                <td class="stats p_two">Player 2</td>
+            </tr>
+            <tr>
+                <td class="stats c_one"></td>
+                <td class="stats c_two"></td>
             </tr>
             <tr>
                 <td><div class="stats">Total number of flips</div></td>
                 <td><div class="stats" id="flips"></div></td>
             </tr>
             <tr>
-                <td><div class="stats">Time Elapsed</div></td>
-                <td><div class="stats" id="runner"></div></td>
+                <td colspan="2"></td>
             </tr>
         </table>
-       
-       <div id="cardboard">
-           
        </div>
+       <div id="cardboard"></div>
+       
     </body>
 </html>

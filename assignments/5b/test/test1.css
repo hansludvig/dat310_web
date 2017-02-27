@@ -19,7 +19,6 @@ body {
 }
 .front {
     border-radius: 5px;
-    
     background-color: green;
 }
 
@@ -27,8 +26,21 @@ body {
     float: top;
 }
 
-table{
+#cardboard{
+    margin: auto;
+}
+
+.tableboard{
+    margin: auto;
+}
+
+.tableC{
+    float: right;
     border: 1px solid black;
+}
+
+.stats{
+    text-align: center;
 }
 
 /*

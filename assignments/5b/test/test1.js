@@ -13,14 +13,15 @@
     var c2 = 0;
     var last_flip;
 
-    $(".tableClass").hide(); //shows stats for the game
+    $(".tableC").hide(); //shows stats for the game
 
     // Starts the game. Delete all elements from #cardboard and adds new ones
     $("#start").click(function(e) {
 
-        $(".tableClass").show();
+        $(".tableC").show();
         $("#cardboard").empty();
-
+        //$("#runner").runner();
+       
         var sizeCols = 4;
         var sizeRows = 4;
         var j = 0;
@@ -52,18 +53,35 @@
         }
         var cardWidth = card.outerWidth(true);
         $("#cardboard").width(sizeCols * cardWidth);
+        $(".tableboard").width(sizeCols * cardWidth);
+        $(".tableC").width((sizeCols * cardWidth) - 20);
+        $(".stats").width(((sizeCols * cardWidth) - 40 ) / 2)
+        $("#runner").runner('stop');
+        $("#runner").runner({
+            format: function (value) {
+                time_elapsed = parseFloat(Math.round(value) / 1000).toFixed(2);
+                return time_elapsed;
+            }
+        });
 
+        
     });
     
     
 
    $("#cardboard").on("click", ".notMatch", ".card", function(){
+
         var tile = this;
         console.log(this);
         tiles_flipped_total++;
         console.log(tiles_flipped_total);
         console.log($(tile).attr("id"));
         console.log($(tile).data("flip-model").isFlipped);
+
+        if (!timer_started) {
+            timer_started = 1;
+            $('#runner').runner('start');
+        }
 
         if ((memory_values.length < 2)){
 

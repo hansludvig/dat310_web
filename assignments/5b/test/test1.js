@@ -30,7 +30,7 @@
         
         for (var row = 0; row < sizeRows; row++) {
             for (var col = 0; col < sizeCols; col++) {
-                card = $("<div id=" + i + "></div>").addClass("card").addClass("notClicked");
+                card = $("<div id=" + i + "></div>").addClass("card");
                 back = $("<div></div>").addClass("back");
                 back2 = $("<img src=\"../images/fruit_" + j + ".jpg\" alt=" + j + " />");
                 back.prepend(back2);
@@ -57,7 +57,7 @@
     
     
 
-   $("#cardboard").on("click", ".notClicked", ".card", function(){
+   $("#cardboard").on("click", ".card", function(){
         var tile = this;
         console.log(this);
         tiles_flipped_total++;
@@ -67,23 +67,21 @@
 
         if ((memory_values.length < 2)){
 
-            if (memory_values.length == 0){
-                $(tile).flip(true);
+            if (memory_values.length === 0){
+                $(tile).flip(true); // Flip tile, imgae shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
-                $(tile).removeClass("notClicked");
-                //$(tile).off(".flip");
-            } else if (memory_values.length == 1){
-                $(tile).flip(true);
+
+            } else if ((memory_values.length === 1) && ($(tile).data("flip-model").isFlipped === false)){ // If the tile is already fliped then nothing should happen
+
+                $(tile).flip(true); // Flip tile, imgae shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
-                $(tile).removeClass("notClicked");
-                //$(tile).off(".flip");
 
                 if ((memory_values[0] === memory_values[1]) && (memory_tile_ids[0] !== memory_tile_ids[1])){
-                    $(tile).off(".flip");
-                    $(last_flip).flip(true);
+                    $(tile).off(".flip"); // Remove flip from matching tiles
                     $(last_flip).off(".flip");
+
                     tiles_filpped += 2;
                     memory_values = [];
                     memory_tile_ids = [];

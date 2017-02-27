@@ -55,7 +55,8 @@
         $("#cardboard").width(sizeCols * cardWidth);
         $(".tableboard").width(sizeCols * cardWidth);
         $(".tableC").width((sizeCols * cardWidth) - 20);
-        $(".stats").width(((sizeCols * cardWidth) - 40 ) / 2)
+        $(".stats").width(((sizeCols * cardWidth) - 40 ) / 2);
+        $("#c_total").html(tiles_flipped_total);
         $("#runner").runner('stop');
         $("#runner").runner({
             format: function (value) {
@@ -73,7 +74,7 @@
 
         var tile = this;
         console.log(this);
-        tiles_flipped_total++;
+        
         console.log(tiles_flipped_total);
         console.log($(tile).attr("id"));
         console.log($(tile).data("flip-model").isFlipped);
@@ -89,12 +90,16 @@
                 $(tile).flip(true); // Flip tile, imgae shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
+                tiles_flipped_total++;
+                $("#c_total").html(tiles_flipped_total);
 
             } else if ((memory_values.length === 1) && ($(tile).data("flip-model").isFlipped === false)){ // If the tile is already fliped then nothing should happen
 
                 $(tile).flip(true); // Flip tile, imgae shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
+                tiles_flipped_total++;
+                $("#c_total").html(tiles_flipped_total);
 
                 if ((memory_values[0] === memory_values[1]) && (memory_tile_ids[0] !== memory_tile_ids[1])){
                     $(tile).off(".flip"); // Remove flip from matching tiles

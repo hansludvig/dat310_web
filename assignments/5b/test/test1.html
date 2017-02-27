@@ -4,6 +4,7 @@
         <title>jQuery plugin</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>        
         <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+        <script src="jquery-runner-master/build/jquery.runner.js"></script>
         <script src="test1.js"></script>
         <link rel="stylesheet" href="test1.css">
     </head>
@@ -28,12 +29,12 @@
                 <td class="stats p_two">Player 2</td>
             </tr>
             <tr>
-                <td class="stats c_one"></td>
-                <td class="stats c_two"></td>
+                <td class="stats"><div id="c_one"></div></td>
+                <td class="stats"><div id="c_two"></div></td>
             </tr>
             <tr>
-                <td><div class="stats">Total number of flips</div></td>
-                <td><div class="stats" id="flips"></div></td>
+                <td class="stats"><div>Total number of flips</div></td>
+                <td class="stats"><div id="c_total"></div></td>
             </tr>
             <tr>
                 <td colspan="2"></td>

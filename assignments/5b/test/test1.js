@@ -8,15 +8,47 @@
     var tiles_filpped = 0;
     var tiles_flipped_total = 0;
     var p1 = true;
-    var p2 = false;
     var c1 = 0;
     var c2 = 0;
     var last_flip;
+    var tile_img = [];
+
+    for (var x = 0; x < 8; x++){
+        tile_img.push(x);
+        tile_img.push(x);
+    }
+
+    console.log(tile_img);
+
+    function shuffle(a) {
+        var j, x, i;
+        for (i = a.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
+    }
 
     $(".tableC").hide(); //shows stats for the game
 
     // Starts the game. Delete all elements from #cardboard and adds new ones
     $("#start").click(function(e) {
+
+        timer_started = 0;
+        time_elapsed = 0;
+        memory_values = [];
+        memory_tile_ids = [];
+        tiles_filpped = 0;
+        tiles_flipped_total = 0;
+        p1 = true;
+        c1 = 0;
+        c2 = 0;
+        last_flip = null;
+
+        shuffle(tile_img);
+
+        console.log(tile_img);
 
         $(".tableC").show();
         $("#cardboard").empty();
@@ -33,7 +65,7 @@
             for (var col = 0; col < sizeCols; col++) {
                 card = $("<div id=" + i + "></div>").addClass("card").addClass("notMatch");
                 back = $("<div></div>").addClass("back");
-                back2 = $("<img src=\"../images/fruit_" + j + ".jpg\" alt=" + j + " />");
+                back2 = $("<img src=\"../images/fruit_" + tile_img[i] + ".jpg\" alt=" + tile_img[i] + " />");
                 back.prepend(back2);
                 front = $("<div></div>").addClass("front");
                 card.prepend(back).prepend(front);
@@ -55,9 +87,10 @@
         $("#cardboard").width(sizeCols * cardWidth);
         $(".tableboard").width(sizeCols * cardWidth);
         $(".tableC").width((sizeCols * cardWidth) - 20);
+        $(".winnerboard").width(sizeCols * cardWidth);
         $(".stats").width(((sizeCols * cardWidth) - 40 ) / 2);
         $("#c_total").html(tiles_flipped_total);
-        $("#runner").runner('stop');
+        $("#runner").runner("stop");
         $("#runner").runner({
             format: function (value) {
                 time_elapsed = parseFloat(Math.round(value) / 1000).toFixed(2);
@@ -65,6 +98,8 @@
             }
         });
 
+        $("#c_one").html(c1);
+        $("#c_two").html(c2);
         
     });
     
@@ -107,11 +142,28 @@
                     $(tile).removeClass("notMatch"); // Remove flip from matching tiles
                     $(last_flip).removeClass("notMatch");
                     
+                    if (p1 === true){
+                        c1++;
+                        $("#c_one").html(c1);
+                    }else{
+                        c2++;
+                        $("#c_two").html(c2);
+                    }
 
                     tiles_filpped += 2;
                     memory_values = [];
                     memory_tile_ids = [];
                     last_flip = null;
+
+                    if (tiles_filpped === 16){
+                        $("#runner").runner("stop");
+                        if (c1 > c2){
+                            $(".winner").html("Player 1 won");
+                        }else{
+                            $(".winner").html("Player 2 won");
+                        }
+                        
+                    }
                 } else {
                     
                     function flipBack(){
@@ -120,6 +172,12 @@
                         $(back1).flip(false);
                         $(back2).flip(false);
                         
+                        if (p1 === true){
+                            p1 = false;
+                        }else{
+                            p1 = true;
+                        }
+
                         memory_values = [];
                         memory_tile_ids = [];
                     }
@@ -129,13 +187,7 @@
             
         }
         
-        last_flip = this; // Previus flip
-        console.log(last_flip);
-        
+        last_flip = this; // Previus flip        
     });
-
-    /*$(function(){
-        $(".card").flip();
-    });*/
  });
    

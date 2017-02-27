@@ -13,12 +13,10 @@
     var last_flip;
     var tile_img = [];
 
-    for (var x = 0; x < 8; x++){
+    for (var x = 0; x < 8; x++){ // adds the index for images
         tile_img.push(x);
         tile_img.push(x);
     }
-
-    console.log(tile_img);
 
     function shuffle(a) {
         var j, x, i;
@@ -30,10 +28,10 @@
         }
     }
 
-    $(".tableC").hide(); //shows stats for the game
+    $(".g_info").hide(); //shows stats for the game
 
     // Starts the game. Delete all elements from #cardboard and adds new ones
-    $("#start").click(function(e) {
+    $("#start").click(function() {
 
         timer_started = 0;
         time_elapsed = 0;
@@ -46,11 +44,10 @@
         c2 = 0;
         last_flip = null;
 
-        shuffle(tile_img);
+        shuffle(tile_img); // shuffle tiles
 
-        console.log(tile_img);
-
-        $(".tableC").show();
+        $(".winner").hide();
+        $(".g_info").show();
         $("#cardboard").empty();
         //$("#runner").runner();
        
@@ -70,11 +67,6 @@
                 front = $("<div></div>").addClass("front");
                 card.prepend(back).prepend(front);
                 
-                if (j == 7){
-                    j = 0;
-                }else{
-                    j++;
-                }
                 i++;
                 if (col == 0) {
                     card.addClass("clearleft");
@@ -88,7 +80,7 @@
         $(".tableboard").width(sizeCols * cardWidth);
         $(".tableC").width((sizeCols * cardWidth) - 20);
         $(".winnerboard").width(sizeCols * cardWidth);
-        $(".stats").width(((sizeCols * cardWidth) - 40 ) / 2);
+        $(".g_info").width(((sizeCols * cardWidth) - 40 ) / 2);
         $("#c_total").html(tiles_flipped_total);
         $("#runner").runner("stop");
         $("#runner").runner({
@@ -98,6 +90,8 @@
             }
         });
 
+        $(".p_one").css("background-color", "lightgreen");
+        $(".p_two").css("background-color", "lightgrey");
         $("#c_one").html(c1);
         $("#c_two").html(c2);
         
@@ -108,21 +102,17 @@
    $("#cardboard").on("click", ".notMatch", ".card", function(){
 
         var tile = this;
-        console.log(this);
-        
-        console.log(tiles_flipped_total);
-        console.log($(tile).attr("id"));
-        console.log($(tile).data("flip-model").isFlipped);
 
         if (!timer_started) {
             timer_started = 1;
             $('#runner').runner('start');
+            $("#start").html("New game");
         }
 
         if ((memory_values.length < 2)){
 
             if (memory_values.length === 0){
-                $(tile).flip(true); // Flip tile, imgae shows
+                $(tile).flip(true); // Flip tile, img shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
                 tiles_flipped_total++;
@@ -130,7 +120,7 @@
 
             } else if ((memory_values.length === 1) && ($(tile).data("flip-model").isFlipped === false)){ // If the tile is already fliped then nothing should happen
 
-                $(tile).flip(true); // Flip tile, imgae shows
+                $(tile).flip(true); // Flip tile, img shows
                 memory_values.push($(tile).children(".back").children("img").attr("alt"));
                 memory_tile_ids.push(tile);
                 tiles_flipped_total++;
@@ -139,7 +129,7 @@
                 if ((memory_values[0] === memory_values[1]) && (memory_tile_ids[0] !== memory_tile_ids[1])){
                     $(tile).off(".flip"); // Remove flip from matching tiles
                     $(last_flip).off(".flip");
-                    $(tile).removeClass("notMatch"); // Remove flip from matching tiles
+                    $(tile).removeClass("notMatch"); // Remove notMatch from matching tiles, prevents the tile to flip when clicked again
                     $(last_flip).removeClass("notMatch");
                     
                     if (p1 === true){
@@ -149,7 +139,7 @@
                         c2++;
                         $("#c_two").html(c2);
                     }
-
+                    
                     tiles_filpped += 2;
                     memory_values = [];
                     memory_tile_ids = [];
@@ -157,12 +147,14 @@
 
                     if (tiles_filpped === 16){
                         $("#runner").runner("stop");
-                        if (c1 > c2){
+                        if (c1 === c2){
+                            $(".winner").html("It is a tie"); // Both player have the same amount of moves and points
+                        }else if (c1 > c2){
                             $(".winner").html("Player 1 won");
                         }else{
                             $(".winner").html("Player 2 won");
                         }
-                        
+                        $(".winner").show();
                     }
                 } else {
                     
@@ -174,8 +166,12 @@
                         
                         if (p1 === true){
                             p1 = false;
+                            $(".p_one").css("background-color", "lightgrey");
+                            $(".p_two").css("background-color", "lightgreen");
                         }else{
                             p1 = true;
+                            $(".p_one").css("background-color", "lightgreen");
+                            $(".p_two").css("background-color", "lightgrey");
                         }
 
                         memory_values = [];

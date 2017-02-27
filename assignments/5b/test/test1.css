@@ -10,7 +10,7 @@ body {
 }
 
 .front, .back {
-    border: 2px gray solid;
+    border: 2px green solid;
     padding: 10px;
 }
 .back {
@@ -23,7 +23,8 @@ body {
 }
 
 #start{
-    float: top;
+    text-align: center;
+
 }
 
 #cardboard{
@@ -36,10 +37,9 @@ body {
 
 .tableC{
     float: right;
-    border: 1px solid black;
 }
 
-.stats{
+.g_info{
     text-align: center;
 }
 
@@ -49,4 +49,5 @@ body {
 
 .winner{
     text-align: center;
+    background-color: lightgreen;    
 }

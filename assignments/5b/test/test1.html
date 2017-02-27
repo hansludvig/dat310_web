@@ -8,47 +8,38 @@
         <script src="test1.js"></script>
         <link rel="stylesheet" href="test1.css">
     </head>
-    <nav>
-        <button id="start" type="submit" name="start">Start</button>
-    </nav>
-    
     <body>
-       <div class="tableboard">
-       <table class="tableC" border="1">
-            <tr>
-                <td colspan="2">
-                    <button class="newGame">New Game</button>
-                </td>
-            </tr>
-            <tr>
-                <td><div class="stats">Time Elapsed</div></td>
-                <td><div class="stats" id="runner"></div></td>
-            </tr>
-            <tr>
-                <td class="stats p_one">Player 1</td>
-                <td class="stats p_two">Player 2</td>
-            </tr>
-            <tr>
-                <td class="stats"><div id="c_one"></div></td>
-                <td class="stats"><div id="c_two"></div></td>
-            </tr>
-            <tr>
-                <td class="stats"><div>Total number of flips</div></td>
-                <td class="stats"><div id="c_total"></div></td>
-            </tr>
-        </table>
+        <h1 id="start">Start</h1>
+
+        <div class="tableboard">
+            <table class="tableC">
+                <tr>
+                    <td><div class="g_info">Time Elapsed</div></td>
+                    <td><div class="g_info" id="runner"></div></td>
+                </tr>
+                <tr>
+                    <td class="g_info p_one">Player 1</td>
+                    <td class="g_info p_two">Player 2</td>
+                </tr>
+                <tr>
+                    <td class="g_info"><div id="c_one"></div></td>
+                    <td class="g_info"><div id="c_two"></div></td>
+                </tr>
+                <tr>
+                    <td class="g_info"><div>Total number of flips</div></td>
+                    <td class="g_info"><div id="c_total"></div></td>
+                </tr>
+            </table>
        </div>
        <div id="cardboard"></div>
        <div class="winnerboard">
-           <table class="tableC" border="1">
-            <tr>
-                <td colspan="2">
-                    <div class="winner"></div>
-                </td>
-            </tr>
+           <table class="tableC">
+                <tr>
+                    <td colspan="2">
+                        <h1 class="winner"></h1>
+                    </td>
+                </tr>
            </table>
        </div>
-      
-       
     </body>
 </html>

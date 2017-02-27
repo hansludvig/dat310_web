@@ -62,7 +62,7 @@
             for (var col = 0; col < sizeCols; col++) {
                 card = $("<div id=" + i + "></div>").addClass("card").addClass("notMatch");
                 back = $("<div></div>").addClass("back");
-                back2 = $("<img src=\"../images/fruit_" + tile_img[i] + ".jpg\" alt=" + tile_img[i] + " />");
+                back2 = $("<img src=\"images/fruit_" + tile_img[i] + ".jpg\" alt=" + tile_img[i] + " />");
                 back.prepend(back2);
                 front = $("<div></div>").addClass("front");
                 card.prepend(back).prepend(front);

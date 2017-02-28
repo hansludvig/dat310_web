@@ -30,6 +30,7 @@ class Gradebook(object):
                 self.__students[student_no] = name
 
         # Load courses
+        print("Loading courses.csv ...")
 
         # Load grades
 

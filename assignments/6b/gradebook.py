@@ -13,6 +13,20 @@ class Gradebook(object):
 
     def __init__(self):
         self.__students = {}  # dict with student_no as key and name as value
+        self.__courses = {}
+        self.__grades = {}
+
+    def insertion_sort(self, a):
+
+        for j in range(1, len(a)):
+            key = a[j][1]
+            i = j - 1
+            while i >= 0 and a[i][1] > key:
+                a[i + 1][1] = a[i][1]
+                i = i - 1
+            a[i + 1][1] = key
+
+        return a
 
     def __create_folders(self):
         """Generates folder structure."""
@@ -31,12 +45,46 @@ class Gradebook(object):
 
         # Load courses
         print("Loading courses.csv ...")
+        with open("courses.tsv", "r") as g:
+            for line in g:
+                course_code, course_name = line.strip().split("\t")
+                self.__courses[course_code] = course_name
 
         # Load grades
+        print("Loading grades.tsv ...")
+        with open("grades.tsv", "r") as h:
+            for line in h:
+                student_no, course_code, semester, grade = line.strip().split("\t")
+                result_list = [course_code, semester, grade]
+                if student_no in self.__grades:
+                    self.__grades[student_no].append(result_list)
+                else:
+                    self.__grades[student_no] = [result_list]
 
     def __generate_student_files(self):
-        """Generates HTML files for students."""
-        pass
+        print("Generating student file ...")
+        for s, n in self.__students.items():
+            sPath = "output/students/{}".format(s)
+            with open(sPath, "w") as f:
+                f.write(HTML_FRAME_TOP.replace("{title}", "Grades " + str(s)).replace("{css_path}", "../"))
+                f.write("<h1>Student</h1><table>")
+                f.write("<tr><td><strong>Student no:</td><td>{}</td></tr>".format(s))
+                f.write("<tr><td><strong>Name:</td><td>{}</td></tr>".format(n))
+                f.write("</table><br />\n<table>\n<thead>\n<tr><th>Course code</th><th>Name</th><th>Grade</th></tr>\n"
+                        "</thead>\n<tbody>\n")
+                print(self.__grades[s])
+                list_of_results = self.insertion_sort(self.__grades[s])  # Sort semesters
+                tmp = '0'
+                for i in list_of_results:
+
+                    if tmp != i[1]:
+                        f.write("<tr><td colspan=\"3\"><em>Semester {}</em></td></tr>".format(i[1]))
+                        f.write("<tr><td>{}</td><td>{}</td><td> B</td></tr>".format(i[0], self.__courses[i[0]]))
+                    else:
+                        f.write("<tr><td>{}</td><td>{}</td><td> B</td></tr>".format(i[0], self.__courses[i[0]]))
+                    tmp = i[1]
+                f.write("</tbody>\n</table>")
+                f.write(HTML_FRAME_BOTTOM)
 
     def __generate_course_files(self):
         """Generates HTML files for courses."""
@@ -51,6 +99,7 @@ class Gradebook(object):
         print("Generating index file ...")
         with open("output/index.html", "w") as f:
             f.write(HTML_FRAME_TOP.replace("{title}", "Gradebook Index").replace("{css_path}", "../"))
+
 
             # list of students
             f.write("<h2>Students</h2>")
@@ -70,9 +119,9 @@ class Gradebook(object):
         self.__create_folders()
         self.__load_data()
         self.__generate_student_files()
-        self.__generate_course_files()
-        self.__generate_semester_files()
-        self.__generate_index_file()
+        # self.__generate_course_files()
+        # self.__generate_semester_files()
+        # self.__generate_index_file()
 
 
 def main():

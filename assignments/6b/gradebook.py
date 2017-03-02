@@ -28,6 +28,14 @@ class Gradebook(object):
 
         return a
 
+    def __search_for_course(self, value, double_arr):
+
+        for j in range(0, len(double_arr)):
+            if double_arr[j][0] == value:
+                course_and_grad = [double_arr[j][0], double_arr[j][2]]
+                return course_and_grad
+        return '0'
+
     def __create_folders(self):
         """Generates folder structure."""
         print("Generating folder structure ... ")
@@ -87,8 +95,22 @@ class Gradebook(object):
                 f.write(HTML_FRAME_BOTTOM)
 
     def __generate_course_files(self):
-        """Generates HTML files for courses."""
-        pass
+        print("Generating course file ...")
+        for c, n in self.__courses.items():
+            sPath = "output/students/{}".format(c)
+            with open(sPath, "w") as f:
+                f.write(HTML_FRAME_TOP.replace("{title}", "Course " + str(c)).replace("{css_path}", "../"))
+                f.write("<tr><th>Student no</th><th>Grade</th></tr>\n</thead>\n<tbody>\n")
+                c_name = []
+                for s, meta  in self.__grades.items():
+                    stud_and_grade = self.__search_for_course(str(c), meta)
+                    c_name.append(stud_and_grade)
+                    if stud_and_grade != 0:
+                        f.write("<tr><td>{}</td><td>{}</td></tr>".format(s, c_name[0]))
+                f.write("</tbody>\n</table>\n<h3>Summary</h3><table>\n<thead>\n<tr><th>Grade</th><th>Count</th></tr>\n"
+                        "</thead>\n<tbody>")
+                for a in range(0, len(c_name)):
+                    # try catch ...
 
     def __generate_semester_files(self):
         """Generates HTML files for semesters."""

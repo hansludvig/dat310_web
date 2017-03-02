@@ -80,7 +80,6 @@ class Gradebook(object):
                 f.write("<tr><td><strong>Name:</td><td>{}</td></tr>".format(n))
                 f.write("</table><br />\n<table>\n<thead>\n<tr><th>Course code</th><th>Name</th><th>Grade</th></tr>\n"
                         "</thead>\n<tbody>\n")
-                print(self.__grades[s])
                 list_of_results = self.insertion_sort(self.__grades[s])  # Sort semesters
                 tmp = '0'
                 for i in list_of_results:
@@ -97,20 +96,36 @@ class Gradebook(object):
     def __generate_course_files(self):
         print("Generating course file ...")
         for c, n in self.__courses.items():
-            sPath = "output/students/{}".format(c)
+            sPath = "output/courses/{}".format(c)
             with open(sPath, "w") as f:
                 f.write(HTML_FRAME_TOP.replace("{title}", "Course " + str(c)).replace("{css_path}", "../"))
                 f.write("<tr><th>Student no</th><th>Grade</th></tr>\n</thead>\n<tbody>\n")
                 c_name = []
                 for s, meta  in self.__grades.items():
                     stud_and_grade = self.__search_for_course(str(c), meta)
-                    c_name.append(stud_and_grade)
-                    if stud_and_grade != 0:
+
+                    if stud_and_grade != '0':
+                        c_name.append(stud_and_grade)
+                        print(c_name)
                         f.write("<tr><td>{}</td><td>{}</td></tr>".format(s, c_name[0]))
                 f.write("</tbody>\n</table>\n<h3>Summary</h3><table>\n<thead>\n<tr><th>Grade</th><th>Count</th></tr>\n"
                         "</thead>\n<tbody>")
-                for a in range(0, len(c_name)):
-                    # try catch ...
+                tmp = ''
+                grade_counter = 0
+                m_di = {}
+                for a in c_name:
+
+                    grade = a[1]
+                    if grade == tmp or tmp == '':
+                        grade_counter += 1
+                    else:
+                        m_di[grade] = grade_counter
+                        grade_counter = 1
+                    tmp = grade
+                for key, value in sorted(m_di.items()):
+                    f.write("<tr><td>{}</td><td>{}</td></tr>".format(key, value))
+                f.write("</tbody>\n</table>")
+                f.write(HTML_FRAME_BOTTOM)
 
     def __generate_semester_files(self):
         """Generates HTML files for semesters."""
@@ -141,7 +156,7 @@ class Gradebook(object):
         self.__create_folders()
         self.__load_data()
         self.__generate_student_files()
-        # self.__generate_course_files()
+        self.__generate_course_files()
         # self.__generate_semester_files()
         # self.__generate_index_file()
 

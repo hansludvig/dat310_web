@@ -17,26 +17,6 @@ class Gradebook(object):
         self.__grades = {}
         self.__semester_and_course = {}
 
-    def insertion_sort(self, a):
-
-        for j in range(1, len(a)):
-            key = a[j][1]
-            i = j - 1
-            while i >= 0 and a[i][1] > key:
-                a[i + 1][1] = a[i][1]
-                i = i - 1
-            a[i + 1][1] = key
-
-        return a
-
-    def __search_for_course(self, value, double_arr):
-
-        for j in range(0, len(double_arr)):
-            if double_arr[j][0] == value:
-                course_and_grad = [double_arr[j][0], double_arr[j][2]]
-                return course_and_grad
-        return '0'
-
     def __create_folders(self):
         """Generates folder structure."""
         print("Generating folder structure ... ")

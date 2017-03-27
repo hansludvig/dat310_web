@@ -20,7 +20,16 @@
     </tr>
     </thead>
     <tbody>
-        {# Display movies here #}
+        {% for movie in movies|sort(attribute='rating', reverse=True) %}
+            <tr class="{{ loop.cycle('even', 'odd') }}">
+                <td>#{{ loop.index }}</td>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.year }}</td>
+                <td>{{ movie.rating }}</td>
+                <td>{{ movie.synopsis|default("<em>No synopsis is available</em>")|safe|truncate(80) }}
+                    <br />{{ movie.url|urlize(target="_blank") }}</td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
 

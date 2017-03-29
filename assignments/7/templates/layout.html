@@ -3,23 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>My Webshop: {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     {# NOTE: This is the file that contains your layout. All other template files should extend this one. #}
 
-    <div class="placeholder static">
-        <h1>Header</h1>
-        <div>
-        Navigation menu: <a href="{{ url_for("index") }}">index</a> | <a href="{{ url_for("cart") }}">shopping cart</a>
-        </div>
-    </div>
+    <header>
+        <h1>The unofficial Formula-1 webshop</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">Special deals</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="{{ url_for('cart') }}">Shopping cart</a></li>
+            </ul>
+        </nav>
+    </header>
 
     {% if msg is defined %}<div class="placeholder message">{{ msg }}</div>{% endif %}
     {% if err is defined %}<div class="placeholder error">{{ err }}</div>{% endif %}
 
+    <main>
     {% block content %}{% endblock %}
+    </main>
 
-    <div class="placeholder static">Footer</div>
+    <footer>
+        <div class="contact">
+            <span class="strong">Customer service:</span> <br />
+            +47 321 09 87654 <br />
+            <a href="#">info@f1webshop.com</a>
+        </div>
+
+        <div class="contact">
+            <a href="#"><i class="fa fa-facebook-square fa-3x"></i></a>
+            <a href="#"><i class="fa fa-twitter-square fa-3x"></i></a>
+            <a href="#"><i class="fa fa-google-plus-square fa-3x"></i></a>
+            <a href="#"><i class="fa fa-youtube fa-3x"></i></a>
+        </div>
+
+    </footer>
 </body>
 </html>

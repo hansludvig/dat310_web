@@ -2,17 +2,42 @@
 Assignment 7: Webshop
 """
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, g, flash, redirect, url_for
+import mysql.connector
 
 app = Flask(__name__)
 
+# Application config
+app.config["DATABASE_USER"] = "root"
+app.config["DATABASE_PASSWORD"] = "admin"
+app.config["DATABASE_DB"] = "test_storage"
+app.config["DATABASE_HOST"] = "localhost"
+
+def get_db():
+    if not hasattr(g, "_database"):
+        g._database = mysql.connector.connect(host=app.config["DATABASE_HOST"], user=app.config["DATABASE_USER"],
+                                              password=app.config["DATABASE_PASSWORD"], database=app.config["DATABASE_DB"])
+        return g._database
 
 @app.route("/")
 def index():
     """Index page that shows a list of products"""
-    # TODO: fetch all products from database
-    return render_template("index.html")
 
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        product_list = []
+        sql = "SELECT id, name, description, base_price, bonus_price, photo FROM product_info ORDER BY id;"
+        cur.execute(sql)
+        for i in cur:
+            print(i)
+        return render_template("index.html")
+    except mysql.connector.Error as err:
+        print(err)
+        return render_template("layout.html", msg="erreor")
+    finally:
+        cur.close()
 
 def get_product(product_id):
     """Loads a product from the database."""

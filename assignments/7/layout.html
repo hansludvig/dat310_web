@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Webshop{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
+</head>
+<body>
+    {# NOTE: This is the file that contains your layout. All other template files should extend this one. #}
+
+    <div class="placeholder static">
+        <h1>Header</h1>
+        <div>
+        Navigation menu: <a href="{{ url_for("index") }}">index</a> | <a href="{{ url_for("cart") }}">shopping cart</a>
+        </div>
+    </div>
+
+    {% if msg is defined %}<div class="placeholder message">{{ msg }}</div>{% endif %}
+    {% if err is defined %}<div class="placeholder error">{{ err }}</div>{% endif %}
+
+    {% block content %}{% endblock %}
+
+    <div class="placeholder static">Footer</div>
+</body>
+</html>

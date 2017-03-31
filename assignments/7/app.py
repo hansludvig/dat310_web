@@ -66,7 +66,6 @@ def index():
                                  "normal_price": i[3],
                                  "bonus_price": i[4],
                                  "img": i[5]})
-        print(product_list)
         return render_template("index.html", product_list=product_list)
     except mysql.connector.Error as err:
         print(err)
@@ -129,20 +128,50 @@ def cart():
 def add_to_cart():
     """Add a given product to cart."""
     product_id = request.form["product_id"]
-    print(product_id)
     qt = int(request.form["qt"])
-    print(qt)
 
     if product_id and qt:
         cart = ShoppingCart(session.get("cart", dict()))
-        cart.set(product_id, qt)
+        cart.add(product_id, qt)
         session["cart"] = cart.contents()
-        print(cart.contents())
         msg = "{} piece(s) of product #{} have been added to the cart".format(request.form["qt"], product_id)
     else:
         msg = "error"
 
     return render_template("product.html", product=get_product(product_id), msg=msg)
+
+
+@app.route("/set", methods=["POST"])
+def set():
+    product_id = request.form["product_id"]
+    qt = int(request.form["qt"])
+
+    if product_id and qt:
+        cart = ShoppingCart(session.get("cart", dict()))
+        cart.set(product_id, qt)
+        session["cart"] = cart.contents()
+        flash("Quantity modified")
+    else:
+        print(400)
+
+    return redirect(url_for("cart"))
+
+
+@app.route("/remove", methods=["GET"])
+def remove():
+    product_id = request.args.get("product_id")
+
+    if product_id:
+        cart = ShoppingCart(session.get("cart", dict()))
+        if cart.contains(product_id):
+            cart.remove(product_id)
+            session["cart"] = cart.contents()
+            flash("Product removed cart")
+        else:  # trying to remove a product which is not in the cart
+            print(400)
+    else:
+        print(400)
+    return redirect(url_for("cart"))
 
 
 @app.route("/checkout", methods=["POST"])

@@ -2,7 +2,7 @@
 Assignment 7: Webshop
 """
 
-from flask import Flask, request, render_template, g, flash, redirect, url_for
+from flask import Flask, request, render_template, g, flash, redirect, url_for, session
 import mysql.connector
 
 app = Flask(__name__)
@@ -12,12 +12,41 @@ app.config["DATABASE_USER"] = "root"
 app.config["DATABASE_PASSWORD"] = "admin"
 app.config["DATABASE_DB"] = "test_storage"
 app.config["DATABASE_HOST"] = "localhost"
+app.secret_key = "any random string"
+
+class ShoppingCart:
+    """Class representing a shopping cart."""
+
+    def __init__(self, contents=dict()):
+        """Initializes a shopping cart with content (if provided)."""
+        self.__cart = contents
+
+    def add(self, product_id, qt):
+        """Adds a product to the shopping cart or increases its quantity if it's already there."""
+        self.__cart[product_id] = self.__cart.get(product_id, 0) + qt
+
+    def set(self, product_id, qt):
+        """Sets a product quantity."""
+        self.__cart[product_id] = qt
+
+    def remove(self, product_id):
+        """Removes a product from the shopping cart."""
+        self.__cart.pop(product_id)
+
+    def contains(self, product_id):
+        """Checks if the cart contains a given product."""
+        return product_id in self.__cart
+
+    def contents(self):
+        """Returns the contents of the cart as a dict."""
+        return self.__cart
+
 
 def get_db():
     if not hasattr(g, "_database"):
         g._database = mysql.connector.connect(host=app.config["DATABASE_HOST"], user=app.config["DATABASE_USER"],
                                               password=app.config["DATABASE_PASSWORD"], database=app.config["DATABASE_DB"])
-        return g._database
+    return g._database
 
 @app.route("/")
 def index():
@@ -28,11 +57,17 @@ def index():
 
     try:
         product_list = []
-        sql = "SELECT id, name, description, base_price, bonus_price, photo FROM product_info ORDER BY id;"
+        sql = "SELECT id, name, description, normal_price, bonus_price, photo FROM product_info ORDER BY id;"
         cur.execute(sql)
         for i in cur:
-            print(i)
-        return render_template("index.html")
+            product_list.append({"id": i[0],
+                                 "name": i[1],
+                                 "description": i[2],
+                                 "normal_price": i[3],
+                                 "bonus_price": i[4],
+                                 "img": i[5]})
+        print(product_list)
+        return render_template("index.html", product_list=product_list)
     except mysql.connector.Error as err:
         print(err)
         return render_template("layout.html", msg="erreor")
@@ -41,11 +76,28 @@ def index():
 
 def get_product(product_id):
     """Loads a product from the database."""
-    # TODO: look up product from database
-    product_data = {
-        "product_id": product_id
-    }
-    return product_data
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        product_data = {}
+        sql = "SELECT id, name, description, normal_price, bonus_price, photo FROM product_info WHERE id={};".format(product_id)
+        cur.execute(sql)
+        for i in cur:
+            product_data = {
+                "product_id": product_id,
+                "name": i[1],
+                "description": i[2],
+                "normal_price": i[3],
+                "bonus_price": i[4],
+                "img": i[5]
+            }
+        return product_data
+    except mysql.connector.Error as err:
+        print(err)
+        return render_template("layout.html", msg="erreor")
+    finally:
+        cur.close()
 
 
 @app.route("/product/<int:product_id>")
@@ -57,16 +109,39 @@ def product(product_id):
 @app.route("/cart")
 def cart():
     """Shopping cart."""
-    # TODO: fetch the contents of the cart from session
-    return render_template("cart.html")
+
+    total = 0
+
+    cart = ShoppingCart(session.get("cart", dict()))
+    cartItems = []
+    for product_id, qt in cart.contents().items():
+        prod = get_product(product_id)
+        prod["count"] = qt
+        cartItems.append(prod)
+        if prod["bonus_price"] == None:
+            total += prod["normal_price"] * qt
+        else:
+            total += prod["bonus_price"] * qt
+    return render_template("cart.html", cart=cartItems, total=total)
 
 
 @app.route("/addtocart", methods=["POST"])
 def add_to_cart():
     """Add a given product to cart."""
     product_id = request.form["product_id"]
-    # TODO: add product to cart
-    msg = "{} piece(s) of product #{} have been added to the cart".format(request.form["qt"], product_id)
+    print(product_id)
+    qt = int(request.form["qt"])
+    print(qt)
+
+    if product_id and qt:
+        cart = ShoppingCart(session.get("cart", dict()))
+        cart.set(product_id, qt)
+        session["cart"] = cart.contents()
+        print(cart.contents())
+        msg = "{} piece(s) of product #{} have been added to the cart".format(request.form["qt"], product_id)
+    else:
+        msg = "error"
+
     return render_template("product.html", product=get_product(product_id), msg=msg)
 
 

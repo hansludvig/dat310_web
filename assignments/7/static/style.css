@@ -163,6 +163,11 @@ article .price s {
     color: #424242;
 }
 
+article .price2 {
+    font-weight: normal;
+    color: #424242;
+}
+
 article div.sale {
     position: absolute;
     right: 0px;

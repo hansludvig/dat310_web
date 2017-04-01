@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %} | Cart {% endblock %}
+{% block content %}
+
+    <section id="cart">
+        <h2>Shopping cart</h2>
+        <table>
+            <thead>
+            <tr>
+                <th colspan="2" class="name">Item</th>
+                <th>Item price</th>
+                <th>Quantity</th>
+                <th>Price </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for id in cart %}
+            <tr class="item">
+                <td class="preview"><img src="{{ id.img }}" alt="{{ id.name }}"/></td>
+                <td class="name">{{ id.name }}</td>
+                {% if id.bonus_price == None %}
+                    <td>${{ id.normal_price }}</td>
+                    <td>{{ id.count }}</td>
+                    <td>${{ id.count * id.normal_price }}</td>
+                {% else %}
+                    <td>${{ id.bonus_price }}</td>
+                    <td>{{ id.count }}</td>
+                    <td>${{ id.count * id.bonus_price }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td colspan="4" class="name">Total</td>
+                <td>${{ total }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <form action="" method="POST">
+
+        </form>
+    </section>
+
+{% endblock %}

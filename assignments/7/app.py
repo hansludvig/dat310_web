@@ -174,7 +174,7 @@ def remove():
     return redirect(url_for("cart"))
 
 
-@app.route("/checkout", methods=["POST"])
+@app.route("/checkout", methods=["POST", "GET"])
 def checkout():
     """Checkout process"""
     action = request.form.get("action")
@@ -189,8 +189,20 @@ def checkout():
         else:
             return render_template("checkout_1.html", err="You need to confirm the order.")
     else:
-        # TODO: display form for order details
-        return render_template("checkout_0.html")
+        total = 0
+
+        cart = ShoppingCart(session.get("cart", dict()))
+        cartItems = []
+        for product_id, qt in cart.contents().items():
+            prod = get_product(product_id)
+            prod["count"] = qt
+            cartItems.append(prod)
+            if prod["bonus_price"] == None:
+                total += prod["normal_price"] * qt
+            else:
+                total += prod["bonus_price"] * qt
+
+        return render_template("checkout_0.html", cart=cartItems, total=total)
 
 
 if __name__ == "__main__":

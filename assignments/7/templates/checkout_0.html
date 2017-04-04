@@ -38,9 +38,17 @@
     </section>
 
     <section>
-        <form action="" method="POST">
-
+        <form action="{{ url_for('checkout') }}" method="POST">
+            <label>First name: <input type="text" name="fname"></label><br />
+            <label>Last name: <input type="text" name="lname"></label><br />
+            <label>Email: <input type="email" name="email"></label><br />
+            <label>Phone: <input type="number" name="phone"></label><br />
+            <label>Street address: <input type="text" name="saddress"></label><br />
+            <label>Postcode: <input type="number" name="postcode"></label><br />
+            <label>City: <input type="text" name="city"></label><br />
         </form>
+        <a href="{{ url_for('checkout') }}?action=do_0" class="button"><i class="fa fa-truck"></i> Checkout</a>
+
     </section>
 
 {% endblock %}

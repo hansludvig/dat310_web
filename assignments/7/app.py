@@ -41,6 +41,39 @@ class ShoppingCart:
         """Returns the contents of the cart as a dict."""
         return self.__cart
 
+class Checkout:
+    """Class representing a shopping cart."""
+
+    def __init__(self, contents=dict()):
+        """Initializes a shopping cart with content (if provided)."""
+        self.__cart = contents
+
+    def set(self, order_nr, pdata):  # pdata -> personel data
+        """Sets a product quantity."""
+        self.__cart[order_nr] = pdata
+
+    def remove(self, order_nr):
+        """Removes a product from the shopping cart."""
+        self.__cart.pop(order_nr)
+
+    def contains(self, order_nr):
+        """Checks if the cart contains a given product."""
+        return order_nr in self.__cart
+
+    def contents(self):
+        """Returns the contents of the cart as a dict."""
+        return self.__cart
+
+class OrderNr:
+
+    def __init__(self):
+        self.__order_nr = 100
+
+    def new(self):
+        return self.get() + 1
+
+    def get(self):
+        return self.__order_nr
 
 def get_db():
     if not hasattr(g, "_database"):
@@ -131,6 +164,7 @@ def add_to_cart():
     qt = int(request.form["qt"])
 
     if product_id and qt:
+        print(type(product_id))
         cart = ShoppingCart(session.get("cart", dict()))
         cart.add(product_id, qt)
         session["cart"] = cart.contents()
@@ -177,32 +211,126 @@ def remove():
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
     """Checkout process"""
+    order_nr = OrderNr().get()
     action = request.form.get("action")
+    i = []
     if action == "do_1":
+        fname = request.form.get("fname")
+        lname = request.form.get("lname")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        s_address = request.form.get("saddress")
+        postcode = request.form.get("postcode")
+        city = request.form.get("city")
+
+        pdata = {
+            "fname": fname,
+            "lname": lname,
+            "email": email,
+            "phone": phone,
+            "s_address": s_address,
+            "postcode": postcode,
+            "city": city
+        }
+        print(pdata)
+
+        out = Checkout(session.get("checkout", dict()))
+        out.set(str(order_nr), pdata)
+        session["checkout"] = out.contents()
+        i.append(pdata)
+        print(out.contents())
+
+        if fname and lname and email and phone and s_address and postcode and city:
+            if len(str(phone)) == 8:
+                print(len(phone))
+                if len(str(postcode)) == 4:
+                    print(len(postcode))
+                    total = 0
+                    cart = ShoppingCart(session.get("cart", dict()))
+                    cartItems = []
+                    for product_id, qt in cart.contents().items():
+                        prod = get_product(product_id)
+                        prod["count"] = qt
+                        cartItems.append(prod)
+                        if prod["bonus_price"] == None:
+                            total += prod["normal_price"] * qt
+                        else:
+                            total += prod["bonus_price"] * qt
+                    return render_template("checkout_1.html", cart=cartItems, total=total)
+                else:
+                    msg = "Wrong postcode format"
+                    print(msg)
+                    return render_template("checkout_0.html", pdata=i, msg=msg)
+            else:
+                msg = "Wrong phone format"
+                print(msg)
+                print(len(phone))
+                return render_template("checkout_0.html", pdata=i, msg=msg)
+        else:
+            msg = "Fill out the missing field(s)"
+            print(msg)
+            return render_template("checkout_0.html", pdata=i, msg=msg)
         # TODO: check order details, if all correct show confirmation form,
         # otherwise show order form again (with filled-in values remembered)
-        return render_template("checkout_1.html")
     elif action == "do_2":
         if request.form.get("confirm") == "1":  # check if order is confirmed
             # TODO: save order in database and return order number
-            return render_template("checkout_2.html", order_number="XXX")
-        else:
-            return render_template("checkout_1.html", err="You need to confirm the order.")
-    else:
-        total = 0
+            ch = Checkout(session.get("checkout", dict()))
+            pr = ShoppingCart(session.get("cart", dict()))
+            print(pr.contents())
+            if ch.contains(str(order_nr)):
+                db = get_db()
+                cur = db.cursor()
+                tmp = []
+                for nr, data in ch.contents().items():
+                    tmp.append(nr)
+                    for d, v in data.items():
+                        tmp.append(v)
+                print(tmp)
+                try:
+                    sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
+                          "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
+                          tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] +"');"
+                    print(sql)
 
-        cart = ShoppingCart(session.get("cart", dict()))
-        cartItems = []
-        for product_id, qt in cart.contents().items():
-            prod = get_product(product_id)
-            prod["count"] = qt
-            cartItems.append(prod)
-            if prod["bonus_price"] == None:
-                total += prod["normal_price"] * qt
+                    sql2 = "INSERT INTO order_item (order_id, product_id, qt) VALUES (" + tmp[0] + ", '" + tmp[
+                        3] + "', '" + tmp[4] + "', '" + \
+                           tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+
+                    cur.execute(sql)
+
+                except mysql.connector.Error as err:
+                    print(err)
+                    return "Nope"
+                finally:
+                    cur.close()
+
+
+                session.pop("cart", None)
+                session.pop("checkout", None)
+                OrderNr().new()
+                return render_template("checkout_2.html", order_number=order_nr)
             else:
-                total += prod["bonus_price"] * qt
+                session.pop("cart", None)
+                session.pop("checkout", None)
+                return redirect(url_for("index"))
+        else:
+            total = 0
 
-        return render_template("checkout_0.html", cart=cartItems, total=total)
+            cart = ShoppingCart(session.get("cart", dict()))
+            cartItems = []
+            for product_id, qt in cart.contents().items():
+                prod = get_product(product_id)
+                prod["count"] = qt
+                cartItems.append(prod)
+                if prod["bonus_price"] == None:
+                    total += prod["normal_price"] * qt
+                else:
+                    total += prod["bonus_price"] * qt
+            return render_template("checkout_1.html", cart=cartItems, total=total, err="You need to confirm the order.")
+    else:
+
+        return render_template("checkout_0.html")
 
 
 if __name__ == "__main__":

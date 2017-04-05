@@ -67,7 +67,7 @@ class Checkout:
 class OrderNr:
 
     def __init__(self):
-        self.__order_nr = 100
+        self.__order_nr = 106
 
     def new(self):
         return self.get() + 1
@@ -164,7 +164,7 @@ def add_to_cart():
     qt = int(request.form["qt"])
 
     if product_id and qt:
-        print(type(product_id))
+        #print(type(product_id))
         cart = ShoppingCart(session.get("cart", dict()))
         cart.add(product_id, qt)
         session["cart"] = cart.contents()
@@ -232,19 +232,19 @@ def checkout():
             "postcode": postcode,
             "city": city
         }
-        print(pdata)
+        #print(pdata)
 
         out = Checkout(session.get("checkout", dict()))
         out.set(str(order_nr), pdata)
         session["checkout"] = out.contents()
         i.append(pdata)
-        print(out.contents())
+        #print(out.contents())
 
         if fname and lname and email and phone and s_address and postcode and city:
             if len(str(phone)) == 8:
-                print(len(phone))
+                #print(len(phone))
                 if len(str(postcode)) == 4:
-                    print(len(postcode))
+                    #print(len(postcode))
                     total = 0
                     cart = ShoppingCart(session.get("cart", dict()))
                     cartItems = []
@@ -277,7 +277,7 @@ def checkout():
             # TODO: save order in database and return order number
             ch = Checkout(session.get("checkout", dict()))
             pr = ShoppingCart(session.get("cart", dict()))
-            print(pr.contents())
+            # print(pr.contents())
             if ch.contains(str(order_nr)):
                 db = get_db()
                 cur = db.cursor()
@@ -286,25 +286,21 @@ def checkout():
                     tmp.append(nr)
                     for d, v in data.items():
                         tmp.append(v)
-                print(tmp)
+                # print(tmp)
+                sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
+                      "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
+                      tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+                for k, v in pr.contents().items():
+                    sql += "INSERT INTO order_items (order_id, product_id, qt) VALUES ({}, {}, {});".format(order_nr, k, v)
+                print(sql)
+
                 try:
-                    sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
-                          "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
-                          tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] +"');"
-                    print(sql)
-
-                    sql2 = "INSERT INTO order_item (order_id, product_id, qt) VALUES (" + tmp[0] + ", '" + tmp[
-                        3] + "', '" + tmp[4] + "', '" + \
-                           tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
-
-                    cur.execute(sql)
-
+                    cur.execute(sql, multi=True)
                 except mysql.connector.Error as err:
                     print(err)
-                    return "Nope"
+                    return err
                 finally:
                     cur.close()
-
 
                 session.pop("cart", None)
                 session.pop("checkout", None)

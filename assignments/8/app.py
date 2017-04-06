@@ -3,6 +3,7 @@ Assignment #8: AJAX
 """
 
 from flask import Flask, request, g
+import json
 
 app = Flask(__name__)
 
@@ -11,7 +12,7 @@ class Albums():
     """Class representing a collection of albums."""
 
     def __init__(self, albums_file, tracks_file):
-        self.__albums = {}
+        self.__albums = []
         self.__tracks = {}
         self.__load_albums(albums_file)
         self.__load_tracks(tracks_file)
@@ -21,23 +22,27 @@ class Albums():
         with open(albums_file, "r") as h:
             for line in h:
                 album_id, artist, album_name, album_img = line.strip().split("\t")
-                self.__albums[album_id] = {
+                self.__albums.append({
+                    "id": album_id,
                     "artist": artist,
                     "album_name": album_name,
                     "img": album_img
-                }
-        print(self.__albums)
+                })
+        h.close()
+        #print(self.__albums)
 
     def __load_tracks(self, tracks_file):
         """Loads a list of tracks from a file."""
         with open(tracks_file, "r") as h:
             for line in h:
                 album_id, track_name, track_time = line.strip().split("\t")
-                self.__tracks[album_id] = {
-                    "name": track_name,
-                    "time": track_time
-                }
-        print(self.__tracks)
+
+                if album_id in self.__tracks:
+                    self.__tracks[album_id][track_name] = track_time
+                else:
+                    self.__tracks[album_id] = {track_name: track_time}
+        h.close()
+        #print(self.__tracks)
 
     def get_albums(self):
         """Returns a list of all albums, with album_id, artist and title."""
@@ -45,7 +50,23 @@ class Albums():
 
     def get_album(self, album_id):
         """Returns all details of an album."""
-        return self.__albums[album_id]
+
+        track = []
+        track_time = []
+
+        for i in self.__albums:
+            for t_id, info in self.__tracks.items():
+                if i["id"] == t_id and t_id == album_id:
+                    img = i["img"]
+                    # print(title)
+                    # print(info)
+                    for a, b in info.items():
+                        track.append({
+                            "name": a,
+                            "length": b
+                        })
+
+        return {"album_id": album_id, "img": img, "track": track}
 
 
 # the Albums class is instantiated and stored in a config variable
@@ -58,17 +79,20 @@ def albums():
     """Returns a list of albums (with album_id, author, and title) in JSON."""
     albums = app.config["albums"]
     # TODO complete (return albums.get_albums() in JSON format)
-    print(albums.get_albums())
-    return ""
+    #print(albums.get_album('1'))
+    #print("Albums method ran")
+    return json.dumps(albums.get_albums())
 
 
 @app.route("/albuminfo")
 def albuminfo():
     albums = app.config["albums"]
     album_id = request.args.get("album_id", None)
+    print("albuminfo runs" + str(album_id))
     if album_id:
         # TODO complete (return albums.get_album(album_id) in JSON format)
-        return ""
+        print("album_id exists")
+        return json.dumps(albums.get_album(album_id))
     return ""
 
 

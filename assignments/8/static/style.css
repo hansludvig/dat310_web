@@ -4,6 +4,10 @@
 	color: #333333;
 }
 
+h1 {
+    color: red;
+}
+
 #albums {
 	width: 250px;
 	border: 1px solid #ececec;

@@ -30,7 +30,7 @@ $(document).ready(function(){
         var table = 0; 
         var total_time_sec = 0;
 
-        $.get("/albuminfo", {"album_list": clicked}, function(data){
+        $.get("/albuminfo", {"album_id": clicked}, function(data){
 
             var result = JSON.parse(data);
 

@@ -82,7 +82,7 @@ def albums():
 @app.route("/albuminfo")
 def albuminfo():
     albums = app.config["albums"]
-    album_id = request.args.get("album_list", None)
+    album_id = request.args.get("album_id", None)
     if album_id:
         # TODO complete (return albums.get_album(album_id) in JSON format)
         return json.dumps(albums.get_album(album_id))

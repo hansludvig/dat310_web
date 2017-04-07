@@ -50,22 +50,19 @@ class Albums():
 
     def get_album(self, album_id):
         """Returns all details of an album."""
-
         track = []
-        track_time = []
+        img = None
 
         for i in self.__albums:
             for t_id, info in self.__tracks.items():
                 if i["id"] == t_id and t_id == album_id:
                     img = i["img"]
-                    # print(title)
-                    # print(info)
+
                     for a, b in info.items():
                         track.append({
                             "name": a,
                             "length": b
                         })
-
         return {"album_id": album_id, "img": img, "track": track}
 
 
@@ -79,19 +76,15 @@ def albums():
     """Returns a list of albums (with album_id, author, and title) in JSON."""
     albums = app.config["albums"]
     # TODO complete (return albums.get_albums() in JSON format)
-    #print(albums.get_album('1'))
-    #print("Albums method ran")
     return json.dumps(albums.get_albums())
 
 
 @app.route("/albuminfo")
 def albuminfo():
     albums = app.config["albums"]
-    album_id = request.args.get("album_id", None)
-    print("albuminfo runs" + str(album_id))
+    album_id = request.args.get("album_list", None)
     if album_id:
         # TODO complete (return albums.get_album(album_id) in JSON format)
-        print("album_id exists")
         return json.dumps(albums.get_album(album_id))
     return ""
 

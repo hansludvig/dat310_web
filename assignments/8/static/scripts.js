@@ -2,65 +2,84 @@
  * Assignment 8 
  */
 $(document).ready(function(){
+
+    // load list of albums
     $.get("/albums", function (data){
-        var ul;
-        var a;
+        var ul = 0;
+        var a = 0;
         
+        //decode JSOM 
         $.each(JSON.parse(data), function(index, element) {
-            //console.log(element.artist);
-            ul = $("<li></li>").addClass(element.id);
-            a = $("<a>" + element.artist + " - " + element.album_name +"</a>").attr('id', 'list');
+
+            // list albums
+            ul = $("<li></li>").attr('id', 'list');
+            a = $("<a>" + element.artist + " - " + element.album_name +"</a>").addClass(element.id).attr('id', 'link');
             ul.prepend(a);
-            $("#albums_list").prepend(ul);
+            $("#albums_list").append(ul);
         });
         
     });
 
-    $("#list").click(function(){
-        console.log("kjorer click");
-        var clicked = $(this).attr('class');
-        console.log(clicked);
-        /** 
-        $.get("/albuminfo", {"album_id": clicked}, function(data){
+    // load clicked album
+    $("#albums_list").on("click", "#list", "#link", function(){
+        
+        var clicked = $(this).children().attr("class");
+        $("#album_cover").empty();
+        $("#album_songs").empty();
+        
+        var table = 0; 
+        var total_time_sec = 0;
 
-            var result = JOSN.parse(data);
-            console.log(result);
+        $.get("/albuminfo", {"album_list": clicked}, function(data){
+
+            var result = JSON.parse(data);
 
             var image = $("#album_cover").prepend("<img src='/static/images/" + result.img + "' />");
             $("#album_info").prepend(image);
 
-            var table = $("<table></table>");
+            table = $("<table></table>");
             var table_head = $("<tr><th>No.</th><th>Title</th><th>Length</th></tr>");
+            $(table).append(table_head);
 
-            var table_cels;
             $.each(result.track, function(index, element) {
                 table_tr = $("<tr></tr>");
-                table_td1 = $(index + ".");
-                table_td2 = $(element.name);
-                table_td3 = $(element.length);
+                table_td1 = $("<td>" + (index + 1) + ".</td>").addClass("song_no");
+                table_td2 = $("<td>" + element.name + "</td>").addClass("song_title");
+                table_td3 = $("<td>" + element.length + "</td>").addClass("song_length");
+                
+                // track time
+                var hms = element.length;   
+                var a = hms.split(':'); 
+                total_time_sec += (+a[0]) * 60 + (+a[1]); // album time in sec
+
                 $(table_tr).prepend(table_td3).prepend(table_td2).prepend(table_td1);
-                $(table_head).append(table_tr);
+                $(table).append(table_tr);
             });
 
-            var table_bottom = $("<tr><td colspan='2'><strong>Total length:</strong></td><td class='song_length'><strong>54:08</strong></td></tr>");
-            $(table_head).append(table_bottom);
-            $("#album_songs").prepend($(table).prepend(table_head));
+            var table_bottom = $("<tr><td colspan='2'><strong>Total length:</strong></td><td class='song_length'><strong>" + total_time(total_time_sec) + "</strong></td></tr>");
+            $(table).append(table_bottom);
+
+            $("#album_songs").append($(table)); // add table 
         }); 
-        */
+        
     });
  
 });
-/** Load the list of albums */
-function listAlbums(){
-    // TODO make an AJAX request to /albums
-    // then populate the "albums_list" list with the results
-}
-    
 
+// convert sec to hh:mm:ss
+function total_time(sec){
+    var sec_num = parseInt(sec, 10);
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-/** Show details of a given album */
-function showAlbum(album_id) {
-    // TODO make an AJAX request to /albuminfo with the selected album_id as parameter (i.e., /albuminfo?album_id=xxx),
-    // then show the album cover in the "album_cover" div and display the tracks in a table inside the "album_songs" div
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
 
+    if (hours == "00"){
+        return minutes + ":" + seconds;
+    }else{
+        return hours + ":" + minutes + ":" + seconds;
+    } 
 }

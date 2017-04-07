@@ -25,3 +25,49 @@
 2	Bad Apples	4:28
 2	Dead Horse	4:17
 2	Coma	10:13
+3	Be Quick or Be Dead	3:21
+3	From Here to Eternity	3:35
+3	Afraid to Shoot Strangers	6:52
+3	Fear Is the Key	5:30
+3	Childhood's End	4:37
+3	Wasting Love	5:46
+3	The Fugitive	5:52
+3	Chains of Misery	3:33
+3	The Apparition	3:53
+3	Judas Be My Guide	3:06
+3	Weekend Warrior	5:37
+3	Fear of the Dark	7:16
+4	Speak to Me	1:10
+4	Breathe	2:50
+4	On the Run	3:35
+4	Time	7:05
+4	The Great Gig in the Sky	4:44
+4	Money	6:30
+4	Us and Them	7:41
+4	Any Colour You Like	3:26
+4	Brain Damage	3:50
+4	Eclipse	2:03
+5	Drive My Car	2:25
+5	I'm Only Sleeping	2:58
+5	Nowhere Man	2:40
+5	Doctor Robert	2:14
+5	Yesterday	2:04
+5	Act Naturally	2:27
+5	And Your Bird Can Sing	2:02
+5	I I Needed Someone	2:19
+5	We Can Work It Out	2:10
+5	What Goes On	2:44
+5	Day Tripper	2:47
+6	Outlaw Pete	8:00
+6	My Lucky Day	4:01
+6	Working on a Dream	3:30
+6	Queen of the Supermarket	4:40
+6	What Love Can Do	2:57
+6	This Life	4:30
+6	Good Eye	3:01
+6	Tomorrow Never Knows	2:14
+6	Life Itself	4:00
+6	Kingdom of Days	4:02
+6	Surprise, Surprise	3:24
+6	The Last Carnival	3:11
+6	The Wrestler	3:50

@@ -6,7 +6,7 @@ Make sure your database has a user 'root' with password: admin.
 
 To your database, add the following schema:
 
-'CREATE SCHEMA `test_storage` ;'
+```CREATE SCHEMA `test_storage` ;```
 
 Add the following tables:
 

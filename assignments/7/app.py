@@ -67,10 +67,33 @@ class Checkout:
 class OrderNr:
 
     def __init__(self):
-        self.__order_nr = 106
+        self.__order_nr = self.order_nr_init()
 
-    def new(self):
-        return self.get() + 1
+    def get_db(self):
+        if not hasattr(g, "_database"):
+            g._database = mysql.connector.connect(host=app.config["DATABASE_HOST"], user=app.config["DATABASE_USER"],
+                                                  password=app.config["DATABASE_PASSWORD"],
+                                                  database=app.config["DATABASE_DB"])
+        return g._database
+
+    def order_nr_init(self):
+
+        db = get_db()
+        db.ping(True)
+        cur = db.cursor(buffered=True)
+
+        try:
+            sql = "SELECT order_id FROM order_head ORDER BY order_id DESC LIMIT 1"
+            cur.execute(sql)
+            for e in cur:
+                order_id = e[0] + 1
+
+            return order_id
+        except mysql.connector.Error as err:
+            return 101 #no entries
+        finally:
+            cur.close()
+            db.close()
 
     def get(self):
         return self.__order_nr
@@ -86,6 +109,7 @@ def index():
     """Index page that shows a list of products"""
 
     db = get_db()
+    db.ping(True)
     cur = db.cursor()
 
     try:
@@ -105,10 +129,12 @@ def index():
         return render_template("layout.html", msg="erreor")
     finally:
         cur.close()
+        db.close()
 
 def get_product(product_id):
     """Loads a product from the database."""
     db = get_db()
+    db.ping(True)
     cur = db.cursor()
 
     try:
@@ -127,9 +153,10 @@ def get_product(product_id):
         return product_data
     except mysql.connector.Error as err:
         print(err)
-        return render_template("layout.html", msg="erreor")
+        return render_template("layout.html", err=err)
     finally:
         cur.close()
+        db.close()
 
 
 @app.route("/product/<int:product_id>")
@@ -184,7 +211,7 @@ def set():
         cart = ShoppingCart(session.get("cart", dict()))
         cart.set(product_id, qt)
         session["cart"] = cart.contents()
-        flash("Quantity modified")
+        flash("Quantity modified", "set")
     else:
         print(400)
 
@@ -200,7 +227,7 @@ def remove():
         if cart.contains(product_id):
             cart.remove(product_id)
             session["cart"] = cart.contents()
-            flash("Product removed cart")
+            flash("Product removed from cart", "remove")
         else:  # trying to remove a product which is not in the cart
             print(400)
     else:
@@ -213,7 +240,7 @@ def checkout():
     """Checkout process"""
     order_nr = OrderNr().get()
     action = request.form.get("action")
-    i = []
+
     if action == "do_1":
         fname = request.form.get("fname")
         lname = request.form.get("lname")
@@ -234,10 +261,11 @@ def checkout():
         }
         #print(pdata)
 
-        out = Checkout(session.get("checkout", dict()))
+        out = Checkout()
         out.set(str(order_nr), pdata)
         session["checkout"] = out.contents()
-        i.append(pdata)
+        ch_session = session.get("checkout")
+
         #print(out.contents())
 
         if fname and lname and email and phone and s_address and postcode and city:
@@ -259,17 +287,18 @@ def checkout():
                     return render_template("checkout_1.html", cart=cartItems, total=total)
                 else:
                     msg = "Wrong postcode format"
-                    print(msg)
-                    return render_template("checkout_0.html", pdata=i, msg=msg)
+                    pdata["postcode"] = ""
+
+                    return render_template("checkout_0.html", pdata=ch_session[str(order_nr)], war=msg)
             else:
                 msg = "Wrong phone format"
-                print(msg)
-                print(len(phone))
-                return render_template("checkout_0.html", pdata=i, msg=msg)
+                pdata["phone"] = ""
+
+                return render_template("checkout_0.html", pdata=ch_session[str(order_nr)], war=msg)
         else:
             msg = "Fill out the missing field(s)"
             print(msg)
-            return render_template("checkout_0.html", pdata=i, msg=msg)
+            return render_template("checkout_0.html", pdata=ch_session[str(order_nr)], war=msg)
         # TODO: check order details, if all correct show confirmation form,
         # otherwise show order form again (with filled-in values remembered)
     elif action == "do_2":
@@ -280,35 +309,39 @@ def checkout():
             # print(pr.contents())
             if ch.contains(str(order_nr)):
                 db = get_db()
+                db.ping(True)
                 cur = db.cursor()
-                tmp = []
-                for nr, data in ch.contents().items():
-                    tmp.append(nr)
-                    for d, v in data.items():
-                        tmp.append(v)
-                # print(tmp)
-                sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
-                      "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
-                      tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
-                for k, v in pr.contents().items():
-                    sql += "INSERT INTO order_items (order_id, product_id, qt) VALUES ({}, {}, {});".format(order_nr, k, v)
-                print(sql)
-
                 try:
+                    tmp = []
+                    for nr, data in ch.contents().items():
+                        tmp.append(nr)
+                        for d, v in data.items():
+                            tmp.append(v)
+                    # print(tmp)
+                    sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
+                          "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
+                          tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+                    for k, v in pr.contents().items():
+                        sql += "INSERT INTO order_items (order_id, product_id, qt) VALUES ({}, {}, {});".format(order_nr, k, v)
+                    print(sql)
+
                     cur.execute(sql, multi=True)
+
+                    session.pop("cart", None)
+                    session.pop("checkout", None)
+                    print("Done!")
+                    return render_template("checkout_2.html", order_number=order_nr)
                 except mysql.connector.Error as err:
                     print(err)
-                    return err
+                    return render_template("layout.html", err=err)
                 finally:
                     cur.close()
+                    db.close()
 
-                session.pop("cart", None)
-                session.pop("checkout", None)
-                OrderNr().new()
-                return render_template("checkout_2.html", order_number=order_nr)
             else:
                 session.pop("cart", None)
                 session.pop("checkout", None)
+                flash("Something went wrong! Please try again.", "remove")
                 return redirect(url_for("index"))
         else:
             total = 0
@@ -325,8 +358,11 @@ def checkout():
                     total += prod["bonus_price"] * qt
             return render_template("checkout_1.html", cart=cartItems, total=total, err="You need to confirm the order.")
     else:
-
-        return render_template("checkout_0.html")
+        tmp = session.get("checkout", dict())
+        if order_nr in tmp:
+            return render_template("checkout_0.html", pdata=tmp[str(order_nr)])
+        else:
+            return render_template("checkout_0.html")
 
 
 if __name__ == "__main__":

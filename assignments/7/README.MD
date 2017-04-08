@@ -1,6 +1,6 @@
-###Assignment 7
+# Assignment 7
 
-##MySql Database
+## MySql Database
 
 Make sure your database has a user 'root' with password: admin.
 
@@ -10,7 +10,7 @@ To your database, add the following schema:
 
 Add the following tables:
 
-'''
+```
 CREATE TABLE `product_info` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -20,17 +20,17 @@ CREATE TABLE `product_info` (
   `photo` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 );
-'''
+```
 
-'''
+```
 CREATE TABLE `order_items` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `qt` int(11) NOT NULL
 );
-'''
+```
 
-'''
+```
 CREATE TABLE `order_head` (
   `order_id` int(11) NOT NULL,
   `fname` varchar(45) NOT NULL,
@@ -41,6 +41,6 @@ CREATE TABLE `order_head` (
   `postcode` int(11) NOT NULL,
   `city` varchar(45) NOT NULL,
   PRIMARY KEY (`order_id`));
-'''
+```
 
-#This program is only able to run locally: 'localhost'
+### This program is only able to run locally: 'localhost'

@@ -381,8 +381,8 @@ def delete_order(order_id):
     cur = db.cursor()
 
     try:
-        sql = "SET SQL_SAFE_UPDATES = 0; delete head, items from order_head headjoin order_items items on " \
-              "head.order_id = items.order_idwhere head.order_id = {};SET SQL_SAFE_UPDATES = 1;".format(order_id)
+        sql = "SET SQL_SAFE_UPDATES = 0; delete head, items from order_head head join order_items items on " \
+              "head.order_id = items.order_id where head.order_id = {};SET SQL_SAFE_UPDATES = 1;".format(order_id)
         cur.execute(sql, multi=True)
         db.commit()
         flash("Order id: " + str(order_id) + " deleted from database")

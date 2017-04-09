@@ -308,36 +308,32 @@ def checkout():
             pr = ShoppingCart(session.get("cart", dict()))
             # print(pr.contents())
             if ch.contains(str(order_nr)):
-                db = get_db()
-                db.ping(True)
-                cur = db.cursor()
-                try:
-                    tmp = []
-                    for nr, data in ch.contents().items():
-                        tmp.append(nr)
-                        for d, v in data.items():
-                            tmp.append(v)
-                    # print(tmp)
-                    sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
-                          "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
-                          tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+
+                tmp = []
+                for nr, data in ch.contents().items():
+                    tmp.append(nr)
+                    for d, v in data.items():
+                        tmp.append(v)
+                # print(tmp)
+                sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
+                      "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
+                      tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+                query1 = insert_query(sql)
+                if query1 is True:
                     for k, v in pr.contents().items():
-                        sql += "INSERT INTO order_items (order_id, product_id, qt) VALUES ({}, {}, {});".format(order_nr, k, v)
-                    print(sql)
-
-                    cur.execute(sql, multi=True)
-
+                        sql = "INSERT INTO order_items (order_id, product_id, qt) VALUES ({}, {}, {});".format(order_nr, k, v)
+                        query_product = insert_query(sql)
+                        if query_product is True:
+                            continue
+                        else:
+                            flash("Unable to save your order. This order wil now be deleted. Please try again", "remove")
+                            delete_order(order_nr)
+                            return redirect(url_for("index"))
                     session.pop("cart", None)
                     session.pop("checkout", None)
-                    print("Done!")
                     return render_template("checkout_2.html", order_number=order_nr)
-                except mysql.connector.Error as err:
-                    print(err)
-                    return render_template("layout.html", err=err)
-                finally:
-                    cur.close()
-                    db.close()
-
+                else:
+                    return render_template("layout.html", err=query1)
             else:
                 session.pop("cart", None)
                 session.pop("checkout", None)
@@ -363,6 +359,38 @@ def checkout():
             return render_template("checkout_0.html", pdata=tmp[str(order_nr)])
         else:
             return render_template("checkout_0.html")
+
+def insert_query(sql):
+    db = get_db()
+    db.ping(True)
+    cur = db.cursor()
+
+    try:
+        cur.execute(sql)
+        db.commit()
+        return True
+    except mysql.connector.Error as err:
+        return err
+    finally:
+        cur.close()
+        db.close()
+
+def delete_order(order_id):
+    db = get_db()
+    db.ping(True)
+    cur = db.cursor()
+
+    try:
+        sql = "SET SQL_SAFE_UPDATES = 0; delete head, items from order_head headjoin order_items items on " \
+              "head.order_id = items.order_idwhere head.order_id = {};SET SQL_SAFE_UPDATES = 1;".format(order_id)
+        cur.execute(sql)
+        db.commit()
+        flash("Order id: " + str(order_id) + " deleted from database")
+    except mysql.connector.Error as err:
+        flash(err)
+    finally:
+        cur.close()
+        db.close()
 
 
 if __name__ == "__main__":

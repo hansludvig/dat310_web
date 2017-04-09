@@ -383,7 +383,7 @@ def delete_order(order_id):
     try:
         sql = "SET SQL_SAFE_UPDATES = 0; delete head, items from order_head headjoin order_items items on " \
               "head.order_id = items.order_idwhere head.order_id = {};SET SQL_SAFE_UPDATES = 1;".format(order_id)
-        cur.execute(sql)
+        cur.execute(sql, multi=True)
         db.commit()
         flash("Order id: " + str(order_id) + " deleted from database")
     except mysql.connector.Error as err:

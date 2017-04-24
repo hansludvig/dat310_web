@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %} | Cart {% endblock %}
+{% block content %}
+
+    <section id="cart">
+        <h2>Shopping cart</h2>
+        <table>
+            <thead>
+            <tr>
+                <th colspan="2" class="name">Item</th>
+                <th>Item price</th>
+                <th>Quantity</th>
+                <th>Price </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for id in cart %}
+            <tr class="item">
+                <td class="preview"><img src="{{ id.img }}" alt="{{ id.name }}"/></td>
+                <td class="name">{{ id.name }}</td>
+                {% if id.bonus_price == None %}
+                    <td>${{ id.normal_price }}</td>
+                    <td>
+                        <form action="{{ url_for('set') }}" method="POST">
+                            <input type="hidden" name="product_id" value="{{ id.product_id }}" />
+                            <input type="number" name="qt" maxlength="2" value="{{id.count}}"  min="1" max="99">
+                            <button type="submit" class="fa fa-pencil" value="set"></button>
+                        </form>
+                        <a href="{{ url_for('remove') }}?product_id={{ id.product_id }}" class="fa fa-trash-o"></a>
+                    </td>
+                    <td>${{ id.count * id.normal_price }}</td>
+                {% else %}
+                    <td>${{ id.bonus_price }}</td>
+                    <td>
+                        <form action="{{ url_for('set') }}" method="POST">
+                            <input type="hidden" name="product_id" value="{{ id.product_id }}" />
+                            <input type="number" name="qt" maxlength="2" value="{{id.count}}"  min="1" max="99">
+                            <button type="submit" class="fa fa-pencil" value="set"></button>
+                        </form>
+                        <a href="{{ url_for('remove') }}?product_id={{ id.product_id }}" class="fa fa-trash-o"></a>
+                    </td>
+                    <td>${{ id.count * id.bonus_price }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td colspan="4" class="name">Total</td>
+                <td>${{ total }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {% if total != 0 %}
+        <div class="spacetop">
+            Click here to proceed to the checkout step.
+            <div class="right">
+                <a href="{{ url_for('checkout') }}?action=do_0" class="button"><i class="fa fa-truck"></i> Checkout</a>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+{% endblock %}

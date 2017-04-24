@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+    {% if product %}
+        {% block title %} | Product #{{ product.product_id }} {% endblock %}
+        {% block content %}
+
+
+        <article class="product">
+                <div class="image">
+                    <img src="{{ product.img }}" alt="{{ product.name }}"/>
+                    {% if product.bonus_price != None %}
+                    <div class="sale">-{{ ((1 - (product.bonus_price / product.normal_price)) * 100)|round(1, 'common')|int }}%</div>
+                    {% endif %}
+                </div>
+
+                <div class="details">
+                    <h3>{{ product.name }}</h3>
+
+                    <p>{{ product.description }}</p>
+
+
+                        {% if product.bonus_price != None %}
+                            <div class="price"><s>${{ product.normal_price }}</s>
+                            <span class="sale">${{ product.bonus_price }}</span>
+                            </div>
+                        {% else %}
+                                <div class="price">${{ product.normal_price }}</div>
+                        {% endif %}
+
+
+                    <form class="button" action="{{ url_for('add_to_cart') }}" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}" />
+                        <label>Quantity: <input type="number" name="qt" maxlength="2" value="1"  min="1" max="99"></label>
+                        <button type="submit" class="fa fa-shopping-cart" value="Add to cart"> Add to cart</button>
+                     </form>
+                </div>
+            </article>
+        {% endblock %}
+    {% endif %}

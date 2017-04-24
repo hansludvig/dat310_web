@@ -1,0 +1,71 @@
+{% extends "checkout.html" %}
+{% block checkout %}
+
+{% if pdata %}
+
+        <form action="{{ url_for('checkout') }}" method="POST">
+            <div class="form-group">
+                <label for="f-name_">First name:</label>
+                <input type="text" class="form-control" name="fname" id="f-name_" value="{{ pdata.fname }}">
+            </div>
+            <div class="form-group">
+                <label for="l-name_">Last name:</label>
+                <input type="text" class="form-control" name="lname" id="l-name_" value="{{ pdata.lname }}">
+            </div>
+            <div class="form-group">
+                <label for="mail_">Email:</label>
+                <input type="email" class="form-control" name="email" id="mail_" value="{{ pdata.email }}">
+            </div>
+            <div class="form-group">
+                <label for="phone__">Phone:</label>
+                <input type="number" class="form-control" name="phone" id="phone__" value="{{ pdata.phone }}">
+            </div>
+            <div class="form-group">
+                <label for="s_address_">Street address:</label>
+                <input type="text" class="form-control" name="saddress" id="s_address_" value="{{ pdata.s_address }}">
+            </div>
+            <div class="form-group">
+                <label for="postc_">Postcode:</label>
+                <input type="number" class="form-control" name="postcode" id="postc_" value="{{ pdata.postcode }}">
+            </div>
+            <div class="form-group">
+                <label for="city__">City:</label>
+                <input type="text" class="form-control" name="city" id="city__" value="{{ pdata.city }}">
+            </div>
+            <button type="submit" class="btn btn-default" name="action" value="do_1">Submit</button>
+        </form>
+
+{% else %}
+     <form action="{{ url_for('checkout') }}" method="POST">
+        <div class="form-group">
+            <label for="f-name">First name:</label>
+            <input type="text" class="form-control" name="fname" id="f-name">
+        </div>
+        <div class="form-group">
+            <label for="l-name">Last name:</label>
+            <input type="text" class="form-control" name="lname" id="l-name">
+        </div>
+        <div class="form-group">
+            <label for="mail">Email:</label>
+            <input type="email" class="form-control" name="email" id="mail">
+        </div>
+        <div class="form-group">
+            <label for="phone_">Phone:</label>
+            <input type="number" class="form-control" name="phone" id="phone_">
+        </div>
+        <div class="form-group">
+            <label for="s_address">Street address:</label>
+            <input type="text" class="form-control" name="saddress" id="s_address">
+        </div>
+        <div class="form-group">
+            <label for="postc">Postcode:</label>
+            <input type="number" class="form-control" name="postcode" id="postc">
+        </div>
+        <div class="form-group">
+            <label for="city_">City:</label>
+            <input type="text" class="form-control" name="city" id="city_">
+        </div>
+        <button type="submit" class="btn btn-default" name="action" value="do_1">Submit</button>
+    </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div id="banner">
+        <h2>End-of-season sales 20-70%</h2>
+
+        <h3>Check out our special offers!</h3>
+    </div>
+
+    {% for pc in product_list %}
+        {% if loop.index0 == 3 %}
+            <div class="newline"></div>
+        {% endif %}
+
+        <article class="preview">
+            <a href="{{ url_for('product', product_id=pc['id']) }}"><img src="{{ pc.img }}" alt="{{ pc.name }}"/></a>
+
+            <h3>{{ pc.name }}</h3>
+
+            {% if pc.bonus_price == None %}
+                <div class="price">${{ pc.normal_price }}</div>
+            {% else %}
+                <div class="price"><s>${{ pc.normal_price }}</s> <span class="sale">${{ pc.bonus_price }}</span></div>
+                <div class="sale">-{{ ((1 - (pc.bonus_price / pc.normal_price)) * 100)|round(1, 'common')|int }}%</div>
+            {% endif %}
+        </article>
+    {% endfor %}
+
+{% endblock %}

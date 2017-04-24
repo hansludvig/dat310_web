@@ -40,7 +40,16 @@ header h1 {
     margin-left: 10px;
 }
 
-nav {
+.navbar-custom {
+	background-color:#E9E9E9;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color: #424242;
+    font-weight: bold;
+}
+
+/** nav {
     height: 30px;
     background-color: #E9E9E9;
     border-top: 1px solid #BCBCBC;
@@ -69,6 +78,8 @@ nav a {
     font-weight: bold;
     text-decoration: none;
 }
+
+**/
 
 /** MAIN **/
 

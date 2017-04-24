@@ -4,8 +4,10 @@ Assignment 7: Webshop
 
 from flask import Flask, request, render_template, g, flash, redirect, url_for, session
 import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.debug = True
 
 # Application config
 app.config["DATABASE_USER"] = "root"
@@ -123,7 +125,7 @@ def index():
                                  "normal_price": i[3],
                                  "bonus_price": i[4],
                                  "img": i[5]})
-        return render_template("index.html", product_list=product_list)
+        return render_template("index.html", product_list=product_list, username=session.get("username", None))
     except mysql.connector.Error as err:
         print(err)
         return render_template("layout.html", msg="erreor")
@@ -359,6 +361,43 @@ def checkout():
             return render_template("checkout_0.html", pdata=tmp[str(order_nr)])
         else:
             return render_template("checkout_0.html")
+
+# ASSIGN 9 ---------------------------------------------------------------------------------------------
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":  # if the form was submitted (otherwise we just display form)
+        if valid_login(request.form["username"], request.form["password"]):
+            session["username"] = request.form["username"]
+            return redirect(url_for("index"))
+        else:
+            flash("Invalid username or password!", "remove")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("username")
+    flash("You are now logged out!", "set")
+    return redirect(url_for("index"))
+
+def valid_login(username, password):
+    """Checks if username-password combination is valid."""
+    db = get_db()
+    db.ping(True)
+    cur = db.cursor()
+
+    try:
+        sql = "SELECT password FROM users WHERE user_name = '{}';".format(username)
+        cur.execute(sql)
+        for i in cur:
+            return check_password_hash(i[0], password)
+        return False
+    except mysql.connector.Error as err:
+        flash(err, "set")
+        return False
+    finally:
+        cur.close()
+        db.close()
 
 def insert_query(sql):
     db = get_db()

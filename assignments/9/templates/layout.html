@@ -15,13 +15,24 @@
 
     <header>
         <h1>The unofficial Formula-1 webshop</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">Special deals</a></li>
-                <li><a href="#">Wishlist</a></li>
-                <li><a href="{{ url_for('cart') }}">Shopping cart</a></li>
-            </ul>
+        <nav class="navbar navbar-custom">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Special deals</a></li>
+                    <li><a href="#">Wishlist</a></li>
+                    <li><a href="{{ url_for('cart') }}">Shopping cart</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if username %}
+                        <li><a href="#"><span class="glyphicon glyphicon-wrench"></span> Product management</a></li>
+                        <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout | {{ username }}</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
         </nav>
     </header>
 

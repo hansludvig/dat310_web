@@ -51,6 +51,12 @@ class Database:
 
     def get_products(self):
         return self.products
+
+    def get_product(self, id):
+        for i in self.products:
+            if i.id == id:
+                return i
+        return None
 """
     def get_db(self):
         if not hasattr(g, "_database"):
@@ -71,17 +77,22 @@ with app.app_context():
     app.config["PRODUCTS"] = Database(get_db())
 
 
-def tekst():
-    return Database()
-
 @app.route("/products")
 def products():
 
-    #db = test()
     db = app.config["PRODUCTS"]
     print(db.get_products())
 
     return render_template("products.html", products=db.get_products())
+
+
+@app.route("/productinfo")
+def productinfo():
+    products = app.config["PRODUCTS"]
+    product_id = request.args.get("product_id", None)
+    if product_id:
+        return json.dumps(products.get_product(product_id))
+    return ""
 
 if __name__ == '__main__':
     app.run()

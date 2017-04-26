@@ -6,10 +6,13 @@
         <h1>Products</h1>
         <table class="table table-striped">
             <thead>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Bonus price</th>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Bonus price</th>
+                    <th>Operation</th>
+                </tr>
             </thead>
             <tbody>
                 {% for product in products %}
@@ -18,10 +21,36 @@
                         <td>{{ product.name }}</td>
                         <td>{{ product.normal_price }}</td>
                         <td>{{ product.bonus_price }}</td>
+                        <td>
+                            <button data-id="{{ product.id }}" type="button" class="btn" data-toggle="modal" data-target="#myModal">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                            </button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!--- Modal --->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                  <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
     </div>
 
 {% endblock %}

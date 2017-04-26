@@ -380,6 +380,10 @@ def logout():
     flash("You are now logged out!", "set")
     return redirect(url_for("index"))
 
+@app.route("/productManagment")
+def productManagment():
+    return render_template("layout_admin.html", username=session.get("username", None))
+
 def valid_login(username, password):
     """Checks if username-password combination is valid."""
     db = get_db()

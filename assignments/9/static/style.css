@@ -337,3 +337,11 @@ td, th {
     border: 1px solid #ececec;
     padding: 0.1em;
 }
+
+/** ADMIN (product table) **/
+
+.img-table {
+    display: block;
+    max-width: 90%;
+    height: auto;
+}

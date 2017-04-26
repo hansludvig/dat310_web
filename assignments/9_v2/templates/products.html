@@ -2,6 +2,26 @@
 
 {% block content %}
 
-    <h1>Hei</h1>
+    <div class="container">
+        <h1>Products</h1>
+        <table class="table table-striped">
+            <thead>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Bonus price</th>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.normal_price }}</td>
+                        <td>{{ product.bonus_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

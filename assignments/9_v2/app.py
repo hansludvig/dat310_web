@@ -19,15 +19,14 @@ app.config["DATABASE_HOST"] = "localhost"
 app.secret_key = "any random string"
 
 
-class Database1:
+class Database:
 
-    def __init__(self):
+    def __init__(self, db):
         self.products = []
-        self._load_products()
+        self._load_products(db)
 
-    def _load_products(self):
+    def _load_products(self, db):
 
-        db = self.get_db()
         db.ping(True)
         cur = db.cursor()
 
@@ -50,28 +49,39 @@ class Database1:
             cur.close()
             db.close()
 
+    def get_products(self):
+        return self.products
+"""
     def get_db(self):
         if not hasattr(g, "_database"):
             g._database = mysql.connector.connect(host=app.config["DATABASE_HOST"],
                                                   user=app.config["DATABASE_USER"],
                                                   password=app.config["DATABASE_PASSWORD"],
                                                   database=app.config["DATABASE_DB"])
-        return g._database
+        return g._database"""
+
 
 def get_db():
     if not hasattr(g, "_database"):
         g._database = mysql.connector.connect(host=app.config["DATABASE_HOST"], user=app.config["DATABASE_USER"],
                                               password=app.config["DATABASE_PASSWORD"], database=app.config["DATABASE_DB"])
     return g._database
-def test():
-    return Database1()
+
+with app.app_context():
+    app.config["PRODUCTS"] = Database(get_db())
+
+
+def tekst():
+    return Database()
 
 @app.route("/products")
 def products():
 
-    db = test()
+    #db = test()
+    db = app.config["PRODUCTS"]
+    print(db.get_products())
 
-    return render_template("products.html")
+    return render_template("products.html", products=db.get_products())
 
 if __name__ == '__main__':
     app.run()

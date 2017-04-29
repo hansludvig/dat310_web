@@ -38,7 +38,7 @@ class Database:
                 self.products.append({
                     "id": id,
                     "name": name,
-                    #"description": description,
+                    "description": description,
                     "normal_price": float(normal_price) if float(normal_price).is_integer() else None,
                     "bonus_price": float(bonus_price) if bonus_price else None
                 })
@@ -54,7 +54,7 @@ class Database:
 
     def get_product(self, id):
         for i in self.products:
-            if i.id == id:
+            if int(id) == i['id']:
                 return i
         return None
 """
@@ -86,13 +86,18 @@ def products():
     return render_template("products.html", products=db.get_products())
 
 
-@app.route("/productinfo")
-def productinfo():
+@app.route("/edit/<id>")
+def edit(id):
     products = app.config["PRODUCTS"]
-    product_id = request.args.get("product_id", None)
-    if product_id:
-        return json.dumps(products.get_product(product_id))
-    return ""
+    if id:
+        return render_template("edit.html", product=products.get_product(id))
+    else:
+        flash("Product to not exist")
+
+
+@app.route("/submit")
+def submit():
+    name = request.form.args
 
 if __name__ == '__main__':
     app.run()

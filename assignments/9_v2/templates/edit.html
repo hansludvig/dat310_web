@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if product %}
+        <div class="container" xmlns="http://www.w3.org/1999/html">
+
+
+            <!-- Form -->
+            <form id="userForm" method="post" class="form-horizontal" role="form" action="/submit">
+                <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <h2>Edit product: #{{ product.id }}</h2> <br/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id" class="col-xs-3 control-label">ID</label>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control" id="id" disabled="disabled" value="{{ product.id }}"/>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <label for="name" class="col-xs-3 control-label">Product name</label>
+                    <div class="col-xs-5">
+                        <input type="text" class="form-control" id="name" value="{{ product.name }}" required data-error/>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+
+               <div class="form-group has-feedback">
+                    <label for="description" class="col-xs-3 control-label">Description</label>
+                    <div class="col-xs-5">
+                        <textarea rows="5" class="form-control" id="description" required>{{ product.description }}</textarea>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <label for="normal_price" class="col-xs-3 control-label">Price</label>
+                    <div class="col-xs-5">
+                        <input type="number" class="form-control" id="normal_price" value="{{ product.normal_price }}" required/>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <label for="bonus_price" class="col-xs-3 control-label">Bonus price</label>
+                    <div class="col-xs-5">
+                        <input type="number" class="form-control" id="bonus_price" value="{{ product.bonus_price }}" max="{{ product.normal_price }}" data-error="The bonus price must be less than the original price"/>
+                        <div class="help-block with-errors"></div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <button type="submit" class=" form-control btn btn-primary">Submit</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    {% else %}
+        <h1>WTF</h1>
+    {% endif %}
+
+
+{% endblock %}

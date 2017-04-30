@@ -3,33 +3,48 @@
 {% block content %}
 
     <div class="container" style="margin-top: 10px">
-        <h1>Products</h1> <br>
-        <table id="product_table" class="display table table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Bonus price</th>
-                    <th>Operation</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.normal_price }}</td>
-                        <td>{{ product.bonus_price }}</td>
-                        <td>
-                            <a href="{{ url_for('edit', id=product.id) }}" data-id="{{ product.id }}" type="button" class="btn">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-xs-4">
+                <h1>Products</h1> <br>
+            </div>
+            <div class="col-xs-1 col-xs-offset-7">
+                <a href="{{ url_for('add') }}" class="btn btn-primary pull-right">Add Product</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="product_table" class="display table table-striped" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Bonus price</th>
+                            <th>Operation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.id }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.normal_price }}</td>
+                                <td>{{ product.bonus_price }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit', id=product.id) }}" data-id="{{ product.id }}" class="btn btn-primary">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+                                    <a href="{{ url_for('delete', id=product.id) }}" data-id="{{ product.id }}" class="btn btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}

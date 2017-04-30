@@ -2,28 +2,21 @@
 
 {% block content %}
 
-    {% if product %}
         <div class="container">
 
 
             <!-- Form -->
-            <form data-toggle="validator" method="POST" class="form-horizontal" role="form" action="{{ url_for('submit') }}" enctype="multipart/form-data">
+            <form id="#myForm" data-toggle="validator" method="POST" class="form-horizontal" role="form" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
                 <div class="form-group">
                     <div class="col-xs-5 col-xs-offset-3">
-                        <h2>Edit product: #{{ product.id }}</h2> <br/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="id" class="col-xs-3 control-label">ID</label>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" id="id" disabled value="{{ product.id }}"/>
+                        <h2>Add new product</h2> <br/>
                     </div>
                 </div>
 
                 <div class="form-group has-feedback">
                     <label for="name" class="col-xs-3 control-label">Product name</label>
                     <div class="col-xs-5">
-                        <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required data-error="Please enter a product name" placeholder="Product name"/>
+                        <input type="text" class="form-control" id="name" name="name" required data-error="Please enter a product name" placeholder="Product name"/>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -31,7 +24,7 @@
                <div class="form-group has-feedback">
                     <label for="description" class="col-xs-3 control-label">Description</label>
                     <div class="col-xs-5">
-                        <textarea rows="5" class="form-control" id="description" name="description" required placeholder="Please enter product description">{{ product.description }}</textarea>
+                        <textarea rows="5" class="form-control" id="description" name="description" required placeholder="Please enter product description"></textarea>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -39,7 +32,7 @@
                 <div class="form-group has-feedback">
                     <label for="normal_price" class="col-xs-3 control-label">Price</label>
                     <div class="col-xs-5">
-                        <input type="number" class="form-control" id="normal_price" name="normal_price" value="{{ product.normal_price }}" required placeholder="Product price"/>
+                        <input type="number" class="form-control" id="normal_price" name="normal_price" required placeholder="Product price"/>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -47,26 +40,26 @@
                 <div class="form-group has-feedback">
                     <label for="bonus_price" class="col-xs-3 control-label">Bonus price</label>
                     <div class="col-xs-5">
-                        <input type="number" class="form-control" id="bonus_price" name="bonus_price" value="{{ product.bonus_price }}" max="{{ product.normal_price }}" data-error="The bonus price must be less than the original price" placeholder="If on sale, enter bonus price"/>
+                        <input type="number" class="form-control" id="bonus_price" disabled name="bonus_price" data-error="The bonus price must be less than the original price" placeholder="If on sale, enter bonus price"/>
                         <div class="help-block with-errors"></div>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="file" class="col-xs-3 control-label">Upload new photo</label>
+                    <label for="file" class="col-xs-3 control-label">Upload file</label>
                     <div class="col-xs-5">
-                        <img src="{{ product.photo }}" alt="{{ product.name }}" class="img-rounded img-responsive">
                         <span class="btn btn-primary">
-                            <input type="file" id="file" name="file">
+                            <input type="file" id="file" name="file" required>
                         </span>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <div class="col-xs-5 col-xs-offset-3">
-                        <button type="submit" name="id" value="{{ product.id }}" class="form-control btn btn-primary">Submit</button>
+                        <button type="submit" name="id" class="form-control btn btn-primary">Submit</button>
                     </div>
                 </div>
 
@@ -77,10 +70,4 @@
                 </div>
             </form>
         </div>
-
-    {% else %}
-        <h1>WTF</h1>
-    {% endif %}
-
-
 {% endblock %}

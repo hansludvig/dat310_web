@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container" style="margin-top: 10px">
+        <div class="row">
+            <div class="col-xs-4">
+                <h1>Orders</h1> <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="product_table" class="display table table-striped" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td><a href="{{ url_for('order', id=order.id) }}">{{ order.id }}</a></td>
+                                <td>{{ order.fname }} {{ order.lname }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

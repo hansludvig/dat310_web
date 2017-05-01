@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        {% if order_info %}
+            <h2>Details</h2><br>
+            <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td>{{ order_info.fname }} {{ order_info.lname }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ order_info.email }}</td>
+                </tr>
+                <tr>
+                    <td>Telephone</td>
+                    <td>{{ order_info.phone }}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{ order_info.postcode }} {{ order_info.city }}, {{ order_info.street }} </td>
+                </tr>
+            </table>
+        {% endif %}
+
+        <h2>Ordered Products</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Bonus price</th>
+                    <th>Quantity</th>
+                    <th>Sum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_list %}
+                    <tr>
+                        <td>{{ order.product_id }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.normal_price }}</td>
+                        <td>{{ order.bonus_price }}</td>
+                        <td>{{ order.qt }}</td>
+                        <td>{{ order.sum }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td colspan="5"><b>Total</b></td>
+                        <td><b>{{ total }}</b></td>
+                    </tr>
+            </tbody>
+
+        </table>
+
+
+    </div>
+{% endblock %}

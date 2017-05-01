@@ -165,6 +165,12 @@ with app.app_context():
 def index():
     return redirect(url_for('login'))
 
+@app.route("/product/<id>") #not done
+def product(id):
+    db = app.config["PRODUCTS"]
+
+    return render_template("product.html", username=session.get("username", None), product=db.get_product(id))
+
 @app.route("/statistics")
 def statistics():
     db = get_db()

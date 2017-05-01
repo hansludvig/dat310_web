@@ -25,10 +25,9 @@
                     <a class="navbar-brand" href="#">Webshop admin</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Home</a></li>
                     <li><a href="{{ url_for('products') }}">Products</a></li>
                     <li><a href="{{ url_for('orders') }}">Orders</a></li>
-                    <li><a href="#">Statitics</a></li>
+                    <li><a href="{{ url_for('statistics') }}">Statitics</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if username %}
@@ -66,7 +65,8 @@
     {% endwith %}
 
     <main>
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
+
     </main>
 
 </body>

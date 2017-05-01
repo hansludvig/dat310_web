@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if username %}
+
+    <div class="container">
+        <h2>Most popular products</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Bonus price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sta | sort(reverse=True, attribute='qt') %}
+                    <tr>
+                        <td>#{{ loop.index }}</td>
+                        <td>{{ s.id }}</td>
+                        <td>{{ s.name }}</td>
+                        <td>{{ s.price }}</td>
+                        <td>{{ s.bonus_price }}</td>
+                        <td>{{ s.qt }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endif %}
+{% endblock %}

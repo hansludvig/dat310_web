@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if username %}
 
     {% if product %}
         <div class="container">
@@ -78,9 +79,7 @@
             </form>
         </div>
 
-    {% else %}
-        <h1>WTF</h1>
     {% endif %}
 
-
+{% endif %}
 {% endblock %}

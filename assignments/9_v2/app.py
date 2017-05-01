@@ -5,7 +5,7 @@
 import os
 from flask import Flask, request, render_template, g, flash, redirect, url_for, session, send_from_directory
 import mysql.connector
-#from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 import json
@@ -161,6 +161,37 @@ with app.app_context():
     app.config["ORDER_LIST"] = Database_order_list(get_db())
 
 
+@app.route("/")
+def index():
+    return redirect(url_for('login'))
+
+@app.route("/statistics")
+def statistics():
+    db = get_db()
+    db.ping(True)
+    cur = db.cursor()
+
+    try:
+        sta = []
+        sql = "select order_items.product_id, product_info.name, product_info.normal_price, product_info.bonus_price, sum(order_items.qt) as Quantity from order_items inner join product_info on order_items.product_id=product_info.id group by order_items.product_id;"
+        cur.execute(sql)
+        for i in cur:
+            id, name, price, bonus_price, qt = i
+            sta.append({
+                "id": id,
+                "name": name,
+                "price": price,
+                "bonus_price": bonus_price,
+                "qt": qt
+            })
+        return render_template("statistics.html", sta=sta, username=session.get("username", None))
+
+    except mysql.connector.Error as err:
+        flash(err, "remove")
+    finally:
+        cur.close()
+        db.close()
+
 @app.route("/products")
 def products():
 
@@ -174,7 +205,7 @@ def orders():
 
     db = app.config["ORDERS"]
 
-    return render_template("orders.html", orders=db.get_orders())
+    return render_template("orders.html", orders=db.get_orders(), username=session.get("username", None))
 
 @app.route("/order/<id>")
 def order(id):
@@ -186,7 +217,7 @@ def order(id):
     for i in order_list:
         total += i["sum"]
 
-    return render_template("order.html", order_info=db_order.get_order(id), order_list=order_list, total=total)
+    return render_template("order.html", order_info=db_order.get_order(id), order_list=order_list, total=total, username=session.get("username", None))
 
 
 
@@ -194,7 +225,7 @@ def order(id):
 def edit(id):
     products = app.config["PRODUCTS"]
     if id:
-        return render_template("edit.html", product=products.get_product(id))
+        return render_template("edit.html", product=products.get_product(id), username=session.get("username", None))
     else:
         flash("Product to not exist")
 
@@ -257,7 +288,7 @@ def submit():
 
 @app.route("/add")
 def add():
-    return render_template("add.html")
+    return render_template("add.html", username=session.get("username", None))
 
 
 @app.route('/uploads/<filename>')
@@ -321,11 +352,7 @@ def login():
 def logout():
     session.pop("username")
     flash("You are now logged out!", "set")
-    return redirect(url_for("index"))
-
-@app.route("/productManagment")
-def productManagment():
-    return render_template("layout_admin.html", username=session.get("username", None))
+    return redirect(url_for("login"))
 
 
 def valid_login(username, password):

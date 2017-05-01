@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if username %}
     <div class="container">
         {% if order_info %}
             <h2>Details</h2><br>
@@ -57,4 +58,5 @@
 
 
     </div>
+{% endif %}
 {% endblock %}

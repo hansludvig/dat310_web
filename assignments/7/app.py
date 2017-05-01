@@ -139,16 +139,17 @@ def get_product(product_id):
 
     try:
         product_data = {}
-        sql = "SELECT id, name, description, normal_price, bonus_price, photo FROM product_info WHERE id={};".format(product_id)
+        sql = "SELECT * FROM product_info WHERE id={};".format(product_id)
         cur.execute(sql)
         for i in cur:
+            id, name, desc, normal_prcie, bonus_price, photo = i
             product_data = {
-                "product_id": product_id,
-                "name": i[1],
-                "description": i[2],
-                "normal_price": i[3],
-                "bonus_price": i[4],
-                "img": i[5]
+                "product_id": id,
+                "name": name,
+                "description": desc,
+                "normal_price": normal_prcie,
+                "bonus_price": bonus_price,
+                "img": photo
             }
         return product_data
     except mysql.connector.Error as err:

@@ -317,8 +317,8 @@ def checkout():
                         tmp.append(v)
                 # print(tmp)
                 sql = "INSERT INTO order_head (order_id, fname, lname, email, phone, " \
-                      "street, postcode, city) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
-                      tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "');"
+                      "street, postcode, city, order_date) VALUES (" + tmp[0] + ", '" + tmp[3] + "', '" + tmp[4] + "', '" + \
+                      tmp[2] + "', " + tmp[5] + ", '" + tmp[7] + "', " + tmp[6] + ", '" + tmp[1] + "', current_timestamp());"
                 query1 = insert_query(sql)
                 if query1 is True:
                     for k, v in pr.contents().items():

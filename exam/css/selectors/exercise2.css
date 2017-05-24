@@ -1,0 +1,30 @@
+body {
+    background-color: #f0f8ff;
+}
+
+div {
+    min-width: 500px;
+    width: 75%;
+    border: 1px solid #333333;
+    margin-bottom: 1em;
+    padding: 0.5em;
+    background-color: white;
+}
+
+span {
+    padding: 0 0.5em 0 0.5em;
+    font-weight: bold;
+}
+
+.alert {
+    border: 1px dashed red; 
+    color: red
+}
+
+#hl1 {
+    background-color: #fdca96
+}
+
+#hl2 {
+    background-color: #fdfd96
+}

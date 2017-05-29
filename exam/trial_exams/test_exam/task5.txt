@@ -1,0 +1,48 @@
+.container {
+    width: 400px;
+    height: 200px;
+    border: 1px solid #808080;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px #777777;
+}
+
+.left {
+    height: 50px;
+    margin-top: 100px;
+    padding: 5px 0 0 5px;
+    float: left;
+    width: 40%;
+    background-color: #3C3C3C;
+}
+
+.middle {
+    height: 50px; 
+    margin-top: 100px;
+    padding: 5px 0 0 5px;
+    float: left;
+}
+
+.right {
+    height: 50px;
+    margin-top: 100px;
+    padding: 5px 0 0 5px;
+    float: right;
+    width: 20%;
+    background-color: #EEEEEE;
+}
+
+.name {
+    clor: white;
+}
+
+.title {
+    color: white;w
+}
+
+.yellow {
+    color: #FFB70B;
+}
+
+#id {
+    
+}

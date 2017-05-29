@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>HTML Coding 7</title>
+    </head>
+    <body>
+        <h1>HTML coding 7</h1>
+
+        <form action="feedback.php" method="POST">
+            <label for="name1">Name </label>
+            <input type="text" name="name" id="name1" size="30" maxlengt="50">
+            <br>
+            <label for="email1">Email </label>
+            <input type="text" name="email" id="email1" size="30" maxlengt="50">
+            <br>
+            <label for="comment">Comment </label>
+            <br>
+            <textarea rows="5" cols="40" id="comment"></textarea>
+            <br>
+            <label>Notify me about: </label>
+            <input type="checkbox" name="notify_news">
+            <input type="checkbox" name="notify_offers">
+            <input type="checkbox" name="notify_events">
+            <br>
+            <input type="submit" value="Send">
+        </form>
+    </body>
+</html>
